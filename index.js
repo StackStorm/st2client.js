@@ -1,14 +1,43 @@
 /*global -Promise*/
 'use strict';
 
-var _ = require('lodash')
-  , Promise = require('rsvp').Promise
-  , needle = require('needle')
+var Promise = require('rsvp').Promise
+  , http = require('http')
   ;
+
+var request = function (params, body, callback) {
+  if (!callback) {
+    callback = body;
+    body = void 0;
+  }
+
+  var req =  http.request(params, function (res) {
+    res.body = '';
+
+    res.on('data', function (chunk) {
+      res.body += chunk.toString('utf8');
+    });
+
+    res.on('end', function () {
+      callback(res);
+    });
+  });
+
+  if (body) {
+    if (params.headers['content-type'].indexOf('application/json') !== -1) {
+      body = JSON.stringify(body);
+    }
+
+    req.write(body);
+  }
+
+  req.end();
+  return req;
+};
 
 var Entity = Object.create(null, {
   // Defaults
-  scheme: {
+  protocol: {
     value: 'http'
   },
   host: {
@@ -32,9 +61,22 @@ var Entity = Object.create(null, {
   list: {
     value: function (opts) {
       return new Promise(function (resolve, reject) {
-        return needle.request('get', this.url, opts, function (err, res) {
-          if (err) {
-            return reject(err);
+
+        return request({
+          method: 'get',
+          protocol: this.protocol + ':',
+          host: this.host,
+          port: this.port,
+          path: this.path,
+          withCredentials: false
+        }, function (res) {
+
+          if (res.headers['content-type'].indexOf('application/json') !== -1) {
+            try {
+              res.body = JSON.parse(res.body);
+            } catch (e) {
+              reject(e);
+            }
           }
 
           if (res.statusCode >= 400) {
@@ -44,11 +86,15 @@ var Entity = Object.create(null, {
             }));
           }
 
-          this.total = res.headers['X-Total-Count'] || res.body.length;
-          this.limit = res.headers['X-Limit'] || opts && opts.limit;
+          this.total = res.headers['x-total-count'] || res.body.length;
+          this.limit = res.headers['x-limit'] || opts && opts.limit;
 
-          return resolve(res.body);
-        }.bind(this));
+          resolve(res.body);
+
+        }.bind(this)).on('error', function (err) {
+          return reject(err);
+        });
+
       }.bind(this));
     }
   },
@@ -56,9 +102,22 @@ var Entity = Object.create(null, {
   get: {
     value: function (id) {
       return new Promise(function (resolve, reject) {
-        return needle.get([this.url, id].join('/'), function (err, res) {
-          if (err) {
-            return reject(err);
+
+        return request({
+          method: 'get',
+          protocol: this.protocol + ':',
+          host: this.host,
+          port: this.port,
+          path: [this.path, id].join('/'),
+          withCredentials: false
+        }, function (res) {
+
+          if (res.headers['content-type'].indexOf('application/json') !== -1) {
+            try {
+              res.body = JSON.parse(res.body);
+            } catch (e) {
+              reject(e);
+            }
           }
 
           if (res.statusCode >= 400) {
@@ -68,8 +127,12 @@ var Entity = Object.create(null, {
             }));
           }
 
-          return resolve(res.body);
+          resolve(res.body);
+
+        }.bind(this)).on('error', function (err) {
+          return reject(err);
         });
+
       }.bind(this));
     }
   }
@@ -95,9 +158,24 @@ var ActionExecutions = Object.create(Entity, {
   create: {
     value: function (payload) {
       return new Promise(function (resolve, reject) {
-        return needle.post(this.url, payload, { json: true }, function (err, res) {
-          if (err) {
-            return reject(err);
+
+        return request({
+          method: 'post',
+          protocol: this.protocol + ':',
+          host: this.host,
+          port: this.port,
+          path: this.path,
+          withCredentials: false,
+          headers: {
+            'content-type': 'application/json'
+          }
+        }, payload, function (res) {
+          if (res.headers['content-type'].indexOf('application/json') !== -1) {
+            try {
+              res.body = JSON.parse(res.body);
+            } catch (e) {
+              reject(e);
+            }
           }
 
           if (res.statusCode !== 201) {
@@ -108,7 +186,10 @@ var ActionExecutions = Object.create(Entity, {
           }
 
           return resolve(res.body);
-        }.bind(this));
+        }.bind(this)).on('error', function (err) {
+          return reject(err);
+        });
+
       }.bind(this));
     }
   },

@@ -1,7 +1,8 @@
 /*global describe, it*/
 'use strict';
 
-var chai = require('chai')
+var _ = require('lodash')
+  , chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
   , nock = require('nock')
   , rsvp = require('rsvp')
@@ -44,6 +45,40 @@ describe('Actions', function () {
       var result = st2api.actions.list();
 
       return expect(result).to.be.rejected;
+    });
+
+    it('should set total count of elements', function () {
+      var actions = require('./fixtures/actions.json');
+
+      mock.get('/actions')
+        .reply(200, actions, {
+          'X-Total-Count': actions.length
+        });
+
+      var result = st2api.actions.list();
+
+      return result.then(function (actions) {
+        expect(st2api.actions).to.have.property('total');
+        expect(st2api.actions.total).to.be.a('number');
+        expect(st2api.actions.total).to.be.equal(actions.length);
+      });
+    });
+
+    it('should set the limit', function () {
+      var LIMIT = 7;
+
+      mock.get('/actions')
+        .reply(200, require('./fixtures/actions.json'), {
+          'X-Limit': LIMIT
+        });
+
+      var result = st2api.actions.list();
+
+      return result.then(function () {
+        expect(st2api.actions).to.have.property('total');
+        expect(st2api.actions.limit).to.be.a('number');
+        expect(st2api.actions.limit).to.be.equal(LIMIT);
+      });
     });
   });
 

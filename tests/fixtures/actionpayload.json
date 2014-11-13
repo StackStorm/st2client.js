@@ -1,0 +1,6 @@
+{
+  "action": "core.http",
+  "parameters": {
+    "url": "http://httpbin.org/ip"
+  }
+}
