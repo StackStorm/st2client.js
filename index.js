@@ -121,10 +121,11 @@ var Entity = Object.create(null, {
           }
 
           if (res.statusCode >= 400) {
-            return reject(new Error({
+            return reject({
+              name: 'APIError',
               status: res.statusCode,
-              message: res.body
-            }));
+              message: res.body.faultstring || res.body
+            });
           }
 
           resolve(res.body);
@@ -179,10 +180,11 @@ var ActionExecutions = Object.create(Entity, {
           }
 
           if (res.statusCode !== 201) {
-            return reject(new Error({
+            return reject({
+              name: 'APIError',
               status: res.statusCode,
-              message: res.body
-            }));
+              message: res.body.faultstring || res.body
+            });
           }
 
           return resolve(res.body);
