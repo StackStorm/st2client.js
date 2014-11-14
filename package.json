@@ -1,5 +1,5 @@
 {
-  "name": "st2",
+  "name": "st2api",
   "version": "0.0.1",
   "description": "StackStorm ST2 API library",
   "main": "index.js",
