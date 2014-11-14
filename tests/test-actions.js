@@ -1,8 +1,7 @@
 /*global describe, it*/
 'use strict';
 
-var _ = require('lodash')
-  , chai = require('chai')
+var chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
   , nock = require('nock')
   , rsvp = require('rsvp')
