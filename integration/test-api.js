@@ -11,7 +11,7 @@ chai.use(chaiAsPromised);
 
 var all = rsvp.all
   , expect = chai.expect
-  , st2api = require('../index')
+  , st2api = require('../index')()
   ;
 
 var MINIMUM_ENTITIES = 3;

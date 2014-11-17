@@ -12,7 +12,7 @@ nock.disableNetConnect();
 
 var all = rsvp.all
   , expect = chai.expect
-  , st2api = require('../index')
+  , st2api = require('../index')()
   , mock = nock('http://172.168.50.50:9101')
   ;
 

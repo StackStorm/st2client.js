@@ -12,7 +12,7 @@ nock.disableNetConnect();
 
 var all = rsvp.all
   , expect = chai.expect
-  , st2api = require('../index')
+  , st2api = require('../index')()
   , mock = nock('http://172.168.50.50:9101')
   ;
 
@@ -66,12 +66,12 @@ describe('Actions', function () {
     it('should set the limit', function () {
       var LIMIT = 7;
 
-      mock.get('/actions')
+      mock.get('/actions?limit=' + LIMIT)
         .reply(200, require('./fixtures/actions.json'), {
           'X-Limit': LIMIT
         });
 
-      var result = st2api.actions.list();
+      var result = st2api.actions.list({ limit: LIMIT });
 
       return result.then(function () {
         expect(st2api.actions).to.have.property('total');

@@ -1,14 +1,23 @@
 /*global -Promise*/
 'use strict';
 
-var Promise = require('rsvp').Promise
+var assign = Object.assign || require('object.assign')
+  , Promise = require('rsvp').Promise
   , http = require('http')
+  , url = require('url')
   ;
 
 var request = function (params, body, callback) {
   if (!callback) {
     callback = body;
     body = void 0;
+  }
+
+  if (params.query) {
+    params.path = url.format({
+      pathname: params.path,
+      query: params.query
+    });
   }
 
   var req =  http.request(params, function (res) {
@@ -35,28 +44,7 @@ var request = function (params, body, callback) {
   return req;
 };
 
-var Entity = Object.create(null, {
-  // Defaults
-  protocol: {
-    value: 'http'
-  },
-  host: {
-    value: '172.168.50.50'
-  },
-  port: {
-    value: 9101
-  },
-  path: {
-    value: '/'
-  },
-
-  // Helpers
-  url: {
-    get: function () {
-      return this.scheme + '://' + this.host + ':' + this.port + this.path;
-    }
-  },
-
+var Readable = {
   // Methods
   list: {
     value: function (opts) {
@@ -68,6 +56,7 @@ var Entity = Object.create(null, {
           host: this.host,
           port: this.port,
           path: this.path,
+          query: opts,
           withCredentials: false
         }, function (res) {
 
@@ -86,8 +75,8 @@ var Entity = Object.create(null, {
             }));
           }
 
-          this.total = res.headers['x-total-count'] || res.body.length;
-          this.limit = res.headers['x-limit'] || opts && opts.limit;
+          this.total = +res.headers['x-total-count'] || res.body.length;
+          this.limit = +res.headers['x-limit'] || opts && opts.limit;
 
           resolve(res.body);
 
@@ -137,25 +126,9 @@ var Entity = Object.create(null, {
       }.bind(this));
     }
   }
-});
+};
 
-var Actions = Object.create(Entity, {
-  path: {
-    value: '/actions'
-  }
-});
-
-var ActionOverview = Object.create(Entity, {
-  path: {
-    value: '/actions/views/overview'
-  }
-});
-
-var ActionExecutions = Object.create(Entity, {
-  path: {
-    value: '/actionexecutions'
-  },
-
+var Writable = {
   create: {
     value: function (payload) {
       return new Promise(function (resolve, reject) {
@@ -223,10 +196,34 @@ var ActionExecutions = Object.create(Entity, {
       return retry(RETRIES);
     }
   }
-});
+};
 
-module.exports = {
-  actions: Actions,
-  actionOverview: ActionOverview,
-  actionExecutions: ActionExecutions
+module.exports = function (opts) {
+  opts = opts || {};
+
+  var Opts = {
+    protocol: {
+      value: opts.protocol || 'http'
+    },
+    host: {
+      value: opts.host || '172.168.50.50'
+    },
+    port: {
+      value: opts.port || 9101
+    }
+  };
+
+  return {
+    actions: Object.create(null, assign({
+      path: { value: '/actions' }
+    }, Opts, Readable)),
+
+    actionOverview: Object.create(null, assign({
+      path: { value: '/actions/views/overview' }
+    }, Opts, Readable)),
+
+    actionExecutions: Object.create(null, assign({
+      path: { value: '/actionexecutions' }
+    }, Opts, Readable, Writable))
+  };
 };

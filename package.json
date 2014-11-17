@@ -10,6 +10,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "lodash": "^2.4.1",
+    "object.assign": "^1.0.1",
     "rsvp": "^3.0.14"
   },
   "devDependencies": {
