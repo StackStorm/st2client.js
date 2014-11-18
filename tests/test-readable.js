@@ -68,11 +68,9 @@ describe('Readable', function () {
       return all([
         expect(result).to.be.rejected,
         result.catch(function (err) {
-          expect(err).to.be.deep.equal({
-            name: 'APIError',
-            status: 400,
-            message: 'some'
-          });
+          expect(err).to.have.property('name', 'APIError');
+          expect(err).to.have.property('status', 400);
+          expect(err).to.have.property('message', 'some');
         })
       ]);
     });
