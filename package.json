@@ -24,6 +24,7 @@
     "gulp-mocha": "^1.1.1",
     "gulp-mocha-phantomjs": "^0.5.1",
     "gulp-plumber": "^0.6.6",
+    "http-browserify": "git://github.com/enykeev/http-browserify.git#feature/additional_exports",
     "mocha": "^2.0.1",
     "nock": "^0.50.0",
     "vinyl-source-stream": "^1.0.0"
