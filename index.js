@@ -1,4 +1,3 @@
-/*global -Promise*/
 'use strict';
 
 var endpoint = require('./lib/endpoint')

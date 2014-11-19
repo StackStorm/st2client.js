@@ -13,8 +13,12 @@ nock.disableNetConnect();
 
 var all = rsvp.all
   , expect = chai.expect
-  , Readable = require('../lib/mixins/readable')
-  , mock = nock('http://test:9101')
+  , Writable = require('../lib/mixins/writable')
+  , mock = nock('http://test:9101', {
+    reqheaders: {
+      'content-type': 'application/json'
+    }
+  })
   ;
 
 var Opts = {
@@ -29,19 +33,21 @@ var Opts = {
   }
 };
 
-describe('Readable', function () {
+describe('Writable', function () {
 
-  var api = endpoint('/test', Opts, Readable);
+  var api = endpoint('/test', Opts, Writable);
 
-  describe('#get()', function () {
+  describe('#create()', function () {
 
     it('should return a promise of a single entity', function () {
-      var response = {};
+      var request = {}
+        , response = {}
+        ;
 
-      mock.get('/test/1')
-        .reply(200, response);
+      mock.post('/test', request)
+        .reply(201, response);
 
-      var result = api.get(1);
+      var result = api.create(request);
 
       return all([
         expect(result).to.eventually.be.an('object'),
@@ -49,23 +55,19 @@ describe('Readable', function () {
       ]);
     });
 
-    it('should throw an error if no id is provided', function () {
+    it('should throw an error if no payload is provided', function () {
       var fn = function () {
-        api.get();
+        api.create();
       };
 
-      expect(fn).to.throw('is not a valid id');
+      expect(fn).to.throw('is not a valid payload');
     });
 
-    it('should reject the promise if server returns 4xx or 5xx status code', function () {
-      var response = {
-        faultstring: 'some'
-      };
+    it('should reject the promise if server returns other than 201 status code', function () {
+      mock.post('/test')
+        .reply(400, 'some');
 
-      mock.get('/test/1')
-        .reply(400, response);
-
-      var result = api.get(1);
+      var result = api.create({});
 
       return all([
         expect(result).to.be.rejected,
