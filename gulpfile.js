@@ -51,6 +51,11 @@ gulp.task('test-browser', ['browserify', 'browserify-tests'], function () {
     }));
 });
 
+gulp.task('test-integration', function () {
+  return gulp.src('integration/**/*.js', {read: false})
+    .pipe(mocha());
+});
+
 gulp.task('watch', function() {
   gulp.watch(['index.js', 'tests/**/*.js'], ['lint', 'browserify']);
 });

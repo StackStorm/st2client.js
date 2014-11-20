@@ -148,6 +148,18 @@ describe('Paginatable', function () {
       api.list(query);
     });
 
+    it('should not throw an error if called without arguments', function (done) {
+      var api = Object.create(null, assign(Paginatable, {
+        listPage: {
+          value: function () {
+            done();
+          }
+        }
+      }));
+
+      api.list();
+    });
+
   });
 
 });

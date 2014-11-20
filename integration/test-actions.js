@@ -32,33 +32,6 @@ describe('Actions', function () {
       ]);
     });
 
-    it('should set total count of elements', function () {
-      var result = st2api.actions.list();
-
-      return result.then(function (actions) {
-        expect(st2api.actions).to.have.property('total');
-        expect(st2api.actions.total).to.be.a('number');
-        expect(st2api.actions.total).to.be.within(MINIMUM_ENTITIES, actions.length);
-      });
-    });
-
-    it('should limit the list', function () {
-      var LIMIT = 10;
-
-      var result = st2api.actions.list({
-        limit: _.clone(LIMIT)
-      });
-
-      return all([
-        expect(result).to.be.fulfilled,
-        expect(result).to.eventually.be.an('array'),
-        result.then(function (actions) {
-          expect(actions).to.have.length.within(MINIMUM_ENTITIES, LIMIT);
-          expect(st2api.actions.limit).to.be.within(MINIMUM_ENTITIES, LIMIT);
-        })
-      ]);
-    });
-
     it('should paginate through the list', function () {
       var LIMIT = 10
         , OFFSET = 10;
