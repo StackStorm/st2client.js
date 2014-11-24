@@ -1,5 +1,5 @@
 {
-  "name": "st2api",
+  "name": "st2client",
   "version": "0.0.2",
   "description": "StackStorm ST2 API library",
   "main": "index.js",

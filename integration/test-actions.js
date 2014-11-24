@@ -11,7 +11,7 @@ chai.use(chaiAsPromised);
 
 var all = rsvp.all
   , expect = chai.expect
-  , st2api = require('../index')()
+  , st2client = require('../index')()
   ;
 
 var MINIMUM_ENTITIES = 3;
@@ -19,7 +19,7 @@ var MINIMUM_ENTITIES = 3;
 describe('Actions', function () {
   describe('#list()', function () {
     it('should return a promise of a list of actions', function () {
-      var result = st2api.actions.list();
+      var result = st2client.actions.list();
 
       return all([
         expect(result).to.be.fulfilled,
@@ -36,7 +36,7 @@ describe('Actions', function () {
       var LIMIT = 10
         , OFFSET = 10;
 
-      var result = st2api.actions.list({
+      var result = st2client.actions.list({
         limit: _.clone(LIMIT),
         offset: _.clone(OFFSET)
       });
@@ -54,7 +54,7 @@ describe('Actions', function () {
 
   describe('#get()', function () {
     it('should return a promise of a single action', function () {
-      var result = st2api.actions.get('core.local');
+      var result = st2client.actions.get('core.local');
 
       return all([
         expect(result).to.be.fulfilled,

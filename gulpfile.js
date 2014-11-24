@@ -23,9 +23,9 @@ gulp.task('lint', function() {
 
 gulp.task('browserify', function() {
   return browserify('./index.js', {
-    standalone: 'st2api'
+    standalone: 'st2client'
   }).bundle()
-    .pipe(source('st2.js'))
+    .pipe(source('st2client.js'))
     .pipe(gulp.dest('dist'));
 });
 
