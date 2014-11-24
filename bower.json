@@ -1,0 +1,22 @@
+{
+  "name": "st2client",
+  "main": "dist/st2client.js",
+  "version": "0.1.0",
+  "homepage": "https://github.com/StackStorm/st2client.js",
+  "authors": [
+    "Kirill Izotov <enykeev@stackstorm.com>"
+  ],
+  "description": "StackStorm ST2 API library",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "Apache-2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "npm-debug.log"
+  ]
+}
