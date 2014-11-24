@@ -134,7 +134,7 @@ describe('Paginatable', function () {
         page: 3
       };
 
-      var api = Object.create(null, assign(Paginatable, {
+      var api = Object.create(null, assign({}, Paginatable, {
         listPage: {
           value: function (page, q) {
             expect(page).to.be.equal(query.page);
@@ -149,7 +149,7 @@ describe('Paginatable', function () {
     });
 
     it('should not throw an error if called without arguments', function (done) {
-      var api = Object.create(null, assign(Paginatable, {
+      var api = Object.create(null, assign({}, Paginatable, {
         listPage: {
           value: function () {
             done();
