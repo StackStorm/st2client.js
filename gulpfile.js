@@ -56,6 +56,8 @@ gulp.task('test-integration', function () {
     .pipe(mocha());
 });
 
+gulp.task('build', ['browserify']);
+
 gulp.task('watch', function() {
   gulp.watch(['index.js', 'tests/**/*.js'], ['lint', 'browserify']);
 });

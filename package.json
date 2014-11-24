@@ -4,7 +4,8 @@
   "description": "StackStorm ST2 API library",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha tests/"
+    "test": "node_modules/.bin/mocha tests/",
+    "prepublish": "node_modules/.bin/gulp"
   },
   "author": "Kirill Izotov <enykeev@stackstorm.com>",
   "license": "Apache-2.0",
