@@ -5,6 +5,7 @@ var endpoint = require('./lib/endpoint')
   , Writable = require('./lib/mixins/writable')
   , Enumerable = require('./lib/mixins/enumerable')
   , Paginatable = require('./lib/mixins/paginatable')
+  , Watchable = require('./lib/mixins/watchable')
   ;
 
 module.exports = function (opts) {
@@ -27,7 +28,7 @@ module.exports = function (opts) {
     actionOverview: endpoint('/actions/views/overview', Opts, Readable, Enumerable),
     actionEntryPoint: endpoint('/actions/views/entry_point', Opts, Readable),
     actionExecutions: endpoint('/actionexecutions', Opts, Readable, Writable, Enumerable),
-    history: endpoint('/history/executions', Opts, Readable, Paginatable),
+    history: endpoint('/history/executions', Opts, Readable, Paginatable, Watchable),
     historyFilters: endpoint('/history/executions/views/filters', Opts, Enumerable),
     rules: endpoint('/rules', Opts, Readable, Writable, Enumerable),
     triggerTypes: endpoint('/triggertypes', Opts, Readable, Enumerable)

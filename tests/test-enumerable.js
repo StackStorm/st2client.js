@@ -89,7 +89,7 @@ describe('Enumerable', function () {
     it('should be a shortcut for the #listAll()', function (done) {
       var query = {};
 
-      var api = Object.create(null, assign(Enumerable, {
+      var api = Object.create(null, assign({}, Enumerable, {
         listAll: {
           value: function (q) {
             expect(q).to.be.equal(query);
