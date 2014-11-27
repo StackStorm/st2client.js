@@ -6,6 +6,7 @@ var endpoint = require('./lib/endpoint')
   , Enumerable = require('./lib/mixins/enumerable')
   , Paginatable = require('./lib/mixins/paginatable')
   , Watchable = require('./lib/mixins/watchable')
+  , Authenticatable = require('./lib/mixins/authenticatable')
   ;
 
 module.exports = function (opts) {
@@ -20,10 +21,21 @@ module.exports = function (opts) {
     },
     port: {
       value: opts.port || 9101
+    },
+    api_version: {
+      value: 'v' + (opts.api_version || 1)
+    },
+    auth: {
+      value: opts.auth || {}
+    },
+    rejectUnauthorized: {
+      value: opts.rejectUnauthorized
     }
   };
 
   return {
+    auth: endpoint('/tokens', Opts, Authenticatable),
+
     actions: endpoint('/actions', Opts, Readable, Enumerable),
     actionOverview: endpoint('/actions/views/overview', Opts, Readable, Enumerable),
     actionEntryPoint: endpoint('/actions/views/entry_point', Opts, Readable),

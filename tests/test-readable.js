@@ -26,6 +26,9 @@ var Opts = {
   },
   port: {
     value: 9101
+  },
+  api_version: {
+    value: 'v1'
   }
 };
 
@@ -38,7 +41,7 @@ describe('Readable', function () {
     it('should return a promise of a single entity', function () {
       var response = {};
 
-      mock.get('/test/1')
+      mock.get('/v1/test/1')
         .reply(200, response);
 
       var result = api.get(1);
@@ -62,7 +65,7 @@ describe('Readable', function () {
         faultstring: 'some'
       };
 
-      mock.get('/test/1')
+      mock.get('/v1/test/1')
         .reply(400, response);
 
       var result = api.get(1);

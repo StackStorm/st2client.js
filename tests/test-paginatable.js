@@ -27,6 +27,9 @@ var Opts = {
   },
   port: {
     value: 9101
+  },
+  api_version: {
+    value: 'v1'
   }
 };
 
@@ -49,7 +52,7 @@ describe('Paginatable', function () {
       var response = []
         ;
 
-      mock.get('/test?limit=10&offset=0')
+      mock.get('/v1/test?limit=10&offset=0')
         .reply(200, response);
 
       var result = api.listPage();
@@ -64,7 +67,7 @@ describe('Paginatable', function () {
       var response = []
         ;
 
-      mock.get('/test?limit=10&offset=50')
+      mock.get('/v1/test?limit=10&offset=50')
         .reply(200, response);
 
       var result = api.listPage(6);
@@ -79,7 +82,7 @@ describe('Paginatable', function () {
       var response = []
         ;
 
-      mock.get('/test?a=b&limit=10&offset=0')
+      mock.get('/v1/test?a=b&limit=10&offset=0')
         .reply(200, response);
 
       var result = api.listPage(null, { a: 'b' });
@@ -94,7 +97,7 @@ describe('Paginatable', function () {
       var response = []
         ;
 
-      mock.get('/test?limit=10&offset=0')
+      mock.get('/v1/test?limit=10&offset=0')
         .reply(200, response, {
           'x-limit': 42,
           'x-total-count': 66
@@ -109,7 +112,7 @@ describe('Paginatable', function () {
     });
 
     it('should reject the promise if server returns 4xx or 5xx status code', function () {
-      mock.get('/test?limit=10&offset=0')
+      mock.get('/v1/test?limit=10&offset=0')
         .reply(400, 'some');
 
       var result = api.listPage();
