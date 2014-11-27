@@ -27,6 +27,9 @@ var Opts = {
   },
   port: {
     value: 9101
+  },
+  api_version: {
+    value: 'v1'
   }
 };
 
@@ -40,7 +43,7 @@ describe('Enumerable', function () {
       var response = []
         ;
 
-      mock.get('/test')
+      mock.get('/v1/test')
         .reply(200, response);
 
       var result = api.listAll();
@@ -55,7 +58,7 @@ describe('Enumerable', function () {
       var response = []
         ;
 
-      mock.get('/test?a=b')
+      mock.get('/v1/test?a=b')
         .reply(200, response);
 
       var result = api.listAll({ a: 'b' });
@@ -67,7 +70,7 @@ describe('Enumerable', function () {
     });
 
     it('should reject the promise if server returns 4xx or 5xx status code', function () {
-      mock.get('/test')
+      mock.get('/v1/test')
         .reply(400, 'some');
 
       var result = api.listAll({});

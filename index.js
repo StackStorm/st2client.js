@@ -22,6 +22,9 @@ module.exports = function (opts) {
     port: {
       value: opts.port || 9101
     },
+    api_version: {
+      value: 'v' + (opts.api_version || 1)
+    },
     auth: {
       value: opts.auth || {}
     },

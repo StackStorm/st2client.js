@@ -30,6 +30,9 @@ var Opts = {
   },
   port: {
     value: 9101
+  },
+  api_version: {
+    value: 'v1'
   }
 };
 
@@ -44,7 +47,7 @@ describe('Writable', function () {
         , response = {}
         ;
 
-      mock.post('/test', request)
+      mock.post('/v1/test', request)
         .reply(201, response);
 
       var result = api.create(request);
@@ -64,7 +67,7 @@ describe('Writable', function () {
     });
 
     it('should reject the promise if server returns other than 201 status code', function () {
-      mock.post('/test')
+      mock.post('/v1/test')
         .reply(400, 'some');
 
       var result = api.create({});
