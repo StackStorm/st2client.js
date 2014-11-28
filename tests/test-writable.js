@@ -6,6 +6,7 @@ var chai = require('chai')
   , endpoint = require('../lib/endpoint')
   , nock = require('nock')
   , rsvp = require('rsvp')
+  , Opts = require('./opts')
   ;
 
 chai.use(chaiAsPromised);
@@ -20,21 +21,6 @@ var all = rsvp.all
     }
   })
   ;
-
-var Opts = {
-  protocol: {
-    value: 'http'
-  },
-  host: {
-    value: 'test'
-  },
-  port: {
-    value: 9101
-  },
-  api_version: {
-    value: 'v1'
-  }
-};
 
 describe('Writable', function () {
 

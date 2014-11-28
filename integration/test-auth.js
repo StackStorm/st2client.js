@@ -19,6 +19,8 @@ var all = rsvp.all
 describe('Auth', function () {
   describe('#authenticate()', function () {
 
+    // Apache takes a lot of time to spin up so the test may fail by timeout. Increase timeout or
+    // run it multiple times.
     it('should return a promise of a token', function () {
       var result = st2client.auth.authenticate('test', 'test');
 

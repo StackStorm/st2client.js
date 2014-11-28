@@ -7,6 +7,7 @@ var assign = Object.assign || require('object.assign')
   , endpoint = require('../lib/endpoint')
   , nock = require('nock')
   , rsvp = require('rsvp')
+  , Opts = require('./opts')
   ;
 
 chai.use(chaiAsPromised);
@@ -20,7 +21,7 @@ var all = rsvp.all
 
 describe('Watchable', function () {
 
-  var api = endpoint('/test', Watchable);
+  var api = endpoint('/test', Opts, Watchable);
 
   describe('#_watchMethod()', function () {
 
@@ -128,7 +129,7 @@ describe('Watchable', function () {
           return true;
         };
 
-      var api = Object.create(null, assign({}, Watchable, {
+      var api = Object.create(null, assign({}, Opts, Watchable, {
         get: {
           value: function () {}
         },
@@ -154,7 +155,7 @@ describe('Watchable', function () {
     });
 
     it('should throw an error if no id is provided', function () {
-      var api = Object.create(null, assign({}, Watchable, {
+      var api = Object.create(null, assign({}, Opts, Watchable, {
         get: {
           value: function () {}
         }
@@ -177,7 +178,7 @@ describe('Watchable', function () {
           return true;
         };
 
-      var api = Object.create(null, assign({}, Watchable, {
+      var api = Object.create(null, assign({}, Opts, Watchable, {
         list: {
           value: function () {}
         },

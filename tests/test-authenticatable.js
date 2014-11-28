@@ -6,6 +6,7 @@ var chai = require('chai')
   , endpoint = require('../lib/endpoint')
   , nock = require('nock')
   , rsvp = require('rsvp')
+  , Opts = require('./opts')
   ;
 
 chai.use(chaiAsPromised);
@@ -20,15 +21,6 @@ var all = rsvp.all
     }
   })
   ;
-
-var Opts = {
-  host: {
-    value: 'test'
-  },
-  auth: {
-    value: {}
-  }
-};
 
 describe('Authenticatable', function () {
 
