@@ -36,6 +36,20 @@ describe('Auth', function () {
       ]);
     });
 
+    it('should reject the promise in case of wrong credentials', function () {
+      var result = st2client.auth.authenticate('test', 'wrongpassword');
+
+      return all([
+        expect(result).to.be.rejected,
+        result.catch(function (err) {
+          expect(err).to.have.property('name', 'APIError');
+          expect(err).to.have.property('status', 401);
+          expect(err).to.have.property('message');
+        })
+      ]);
+
+    });
+
   });
 
 });

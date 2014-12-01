@@ -11,15 +11,21 @@ chai.use(chaiAsPromised);
 
 var all = rsvp.all
   , expect = chai.expect
-  , st2client = require('../index')()
+  , st2client = require('../index')({
+    rejectUnauthorized: false
+  })
   ;
 
 var MINIMUM_ENTITIES = 3;
 
 describe('History', function () {
+  var auth = st2client.authenticate('test', 'test');
+
   describe('#list()', function () {
     it('should return a promise of a list of history records', function () {
-      var result = st2client.history.list();
+      var result = auth.then(function () {
+        return st2client.history.list();
+      });
 
       return all([
         expect(result).to.be.fulfilled,
@@ -33,7 +39,9 @@ describe('History', function () {
     });
 
     it('should set total count of elements', function () {
-      var result = st2client.history.list();
+      var result = auth.then(function () {
+        return st2client.history.list();
+      });
 
       return result.then(function () {
         expect(st2client.history).to.have.property('total');
@@ -45,8 +53,10 @@ describe('History', function () {
     it('should limit the list', function () {
       var LIMIT = 10;
 
-      var result = st2client.history.list({
-        limit: _.clone(LIMIT)
+      var result = auth.then(function () {
+        return st2client.history.list({
+          limit: _.clone(LIMIT)
+        });
       });
 
       return all([
@@ -63,9 +73,11 @@ describe('History', function () {
       var LIMIT = 10
         , OFFSET = 10;
 
-      var result = st2client.history.list({
-        limit: _.clone(LIMIT),
-        offset: _.clone(OFFSET)
+      var result = auth.then(function () {
+        return st2client.history.list({
+          limit: _.clone(LIMIT),
+          offset: _.clone(OFFSET)
+        });
       });
 
       return all([
@@ -81,10 +93,12 @@ describe('History', function () {
 
   describe('#get()', function () {
     it('should return a promise of a single action', function () {
-      var result = st2client.history.list({
-        limit: 1
-      }).then(function (records) {
-        return st2client.history.get(records[0].id);
+      var result = auth.then(function () {
+        return st2client.history.list({
+          limit: 1
+        }).then(function (records) {
+          return st2client.history.get(records[0].id);
+        });
       });
 
       return all([
