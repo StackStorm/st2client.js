@@ -2,6 +2,7 @@
 'use strict';
 
 var _ = require('lodash')
+  , assign = Object.assign || require('object.assign')
   , chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
   , rsvp = require('rsvp')
@@ -11,15 +12,21 @@ chai.use(chaiAsPromised);
 
 var all = rsvp.all
   , expect = chai.expect
-  , st2client = require('../index')()
+  , st2client = require('../index')({
+    rejectUnauthorized: false
+  })
   ;
 
 var MINIMUM_ENTITIES = 3;
 
 describe('Actions', function () {
+  var auth = st2client.authenticate('test', 'test');
+
   describe('#list()', function () {
     it('should return a promise of a list of actions', function () {
-      var result = st2client.actions.list();
+      var result = auth.then(function () {
+        return st2client.actions.list();
+      });
 
       return all([
         expect(result).to.be.fulfilled,
@@ -36,9 +43,11 @@ describe('Actions', function () {
       var LIMIT = 10
         , OFFSET = 10;
 
-      var result = st2client.actions.list({
-        limit: _.clone(LIMIT),
-        offset: _.clone(OFFSET)
+      var result = auth.then(function () {
+        return st2client.actions.list({
+          limit: _.clone(LIMIT),
+          offset: _.clone(OFFSET)
+        });
       });
 
       return all([
@@ -54,7 +63,9 @@ describe('Actions', function () {
 
   describe('#get()', function () {
     it('should return a promise of a single action', function () {
-      var result = st2client.actions.get('core.local');
+      var result = auth.then(function () {
+        return st2client.actions.get('core.local');
+      });
 
       return all([
         expect(result).to.be.fulfilled,

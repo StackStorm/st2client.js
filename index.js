@@ -28,6 +28,11 @@ module.exports = function (opts) {
     auth: {
       value: opts.auth || {}
     },
+    token: {
+      get: function () {
+        return opts.token;
+      }
+    },
     rejectUnauthorized: {
       value: opts.rejectUnauthorized
     }
@@ -43,6 +48,17 @@ module.exports = function (opts) {
     history: endpoint('/history/executions', Opts, Readable, Paginatable, Watchable),
     historyFilters: endpoint('/history/executions/views/filters', Opts, Enumerable),
     rules: endpoint('/rules', Opts, Readable, Writable, Enumerable),
-    triggerTypes: endpoint('/triggertypes', Opts, Readable, Enumerable)
+    triggerTypes: endpoint('/triggertypes', Opts, Readable, Enumerable),
+
+    setToken: function (token) {
+      opts.token = token;
+      return this;
+    },
+    authenticate: function (user, password) {
+      return this.auth.authenticate(user, password).then(function (token) {
+        this.setToken(token);
+        return token;
+      }.bind(this));
+    }
   };
 };
