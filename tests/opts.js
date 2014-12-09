@@ -1,5 +1,7 @@
 'use strict';
 
+var url = require('url');
+
 module.exports = {
   host: {
     value: 'test'
@@ -12,5 +14,16 @@ module.exports = {
   },
   api_version: {
     value: 'v1'
+  },
+
+  url: {
+    get: function () {
+      return url.format({
+        protocol: this.protocol,
+        hostname: this.host,
+        port: this.port,
+        pathname: [this.api_version, this.path].join('')
+      });
+    }
   }
 };

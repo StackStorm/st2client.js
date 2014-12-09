@@ -1,12 +1,14 @@
 'use strict';
 
-var endpoint = require('./lib/endpoint')
+var url = require('url')
+  , endpoint = require('./lib/endpoint')
   , Readable = require('./lib/mixins/readable')
   , Writable = require('./lib/mixins/writable')
   , Enumerable = require('./lib/mixins/enumerable')
   , Paginatable = require('./lib/mixins/paginatable')
   , Watchable = require('./lib/mixins/watchable')
   , Authenticatable = require('./lib/mixins/authenticatable')
+  , Streamable = require('./lib/mixins/streamable')
   ;
 
 module.exports = function (opts) {
@@ -35,6 +37,17 @@ module.exports = function (opts) {
     },
     rejectUnauthorized: {
       value: opts.rejectUnauthorized
+    },
+
+    url: {
+      get: function () {
+        return url.format({
+          protocol: this.protocol,
+          hostname: this.host,
+          port: this.port,
+          pathname: [this.api_version, this.path].join('')
+        });
+      }
     }
   };
 
@@ -48,6 +61,7 @@ module.exports = function (opts) {
     history: endpoint('/history/executions', Opts, Readable, Paginatable, Watchable),
     historyFilters: endpoint('/history/executions/views/filters', Opts, Enumerable),
     rules: endpoint('/rules', Opts, Readable, Writable, Enumerable),
+    stream: endpoint('/stream', Opts, Streamable),
     triggerTypes: endpoint('/triggertypes', Opts, Readable, Enumerable),
 
     setToken: function (token) {
