@@ -2,7 +2,15 @@
 'use strict';
 
 // Due to the trouble to get EventSource working in PhantomJS, we just mocking it.
-function EventSourceStub() {}
+function EventSourceStub(url) {
+
+  Object.defineProperty(this, 'url', {
+    get: function () {
+      return url;
+    }
+  });
+
+}
 
 EventSourceStub.prototype.close = function () {};
 
@@ -45,6 +53,52 @@ describe('Streamable', function () {
         expect(result).to.be.fulfilled,
         result.then(function (source) {
           expect(source).to.be.instanceOf(EventSource);
+          expect(source).to.have.property('url', '//test:9101/v1/stream');
+          source.close();
+        })
+      ]);
+    });
+
+    it('should cache the stream instance', function () {
+      mock.get('/v1/stream')
+        .reply(200);
+
+      var result1 = api.listen()
+        , result2 = api.listen();
+
+      return all([
+        expect(result1).to.be.fulfilled,
+        expect(result1).to.be.fulfilled,
+        result1.then(function (source1) {
+          return result2.then(function (source2) {
+            expect(source1).to.be.equal(source2);
+          });
+        })
+      ]);
+    });
+
+    it('should include a token as a query parameter', function () {
+      var api = endpoint('/stream', Opts, {
+        token: {
+          value: {
+            token: 'DEADBEEF'
+          }
+        },
+        cacheStream: {
+          value: false
+        }
+      }, Streamable);
+
+      mock.get('/v1/stream')
+        .reply(200);
+
+      var result = api.listen();
+
+      return all([
+        expect(result).to.be.fulfilled,
+        result.then(function (source) {
+          expect(source).to.be.instanceOf(EventSource);
+          expect(source).to.have.property('url', '//test:9101/v1/stream?x-auth-token=DEADBEEF');
           source.close();
         })
       ]);
