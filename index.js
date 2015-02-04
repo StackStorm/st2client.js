@@ -38,6 +38,9 @@ module.exports = function (opts) {
     rejectUnauthorized: {
       value: opts.rejectUnauthorized
     },
+    cacheStream: {
+      value: true
+    },
 
     url: {
       get: function () {

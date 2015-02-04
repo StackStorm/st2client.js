@@ -15,6 +15,9 @@ module.exports = {
   api_version: {
     value: 'v1'
   },
+  cacheStream: {
+    value: true
+  },
 
   url: {
     get: function () {
