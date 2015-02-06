@@ -5,6 +5,7 @@ var chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
   , rsvp = require('rsvp')
   , EventSource = global.EventSource || require('eventsource')
+  , config = require('./config.js')
   ;
 
 chai.use(chaiAsPromised);
@@ -12,37 +13,34 @@ chai.use(chaiAsPromised);
 var all = rsvp.all
   , expect = chai.expect
   , Promise = rsvp.Promise
-  , st2client = require('../index')({
-    rejectUnauthorized: false
-  })
+  , st2client = require('../index')(config)
   ;
 
 describe('Stream', function () {
-  //var auth = st2client.authenticate('test', 'test');
+  var auth = st2client.authenticate(config.credentials.user, config.credentials.password);
 
   describe('#listen()', function () {
     it('should return a promise of an event source', function () {
-      // var result = auth.then(function () {
-      //   return st2client.stream.listen();
-      // });
-
-      var result = st2client.stream.listen();
+      var listen = auth.then(function () {
+        return st2client.stream.listen();
+      });
 
       return all([
-        expect(result).to.be.fulfilled,
-        result.then(function (source) {
+        expect(listen).to.be.fulfilled,
+        listen.then(function (source) {
           expect(source).to.be.instanceOf(EventSource);
         })
       ]);
     });
 
     it('should return the same event source', function () {
-      // var result = auth.then(function () {
-      //   return st2client.stream.listen();
-      // });
 
-      var result1 = st2client.stream.listen()
-        , result2 = st2client.stream.listen();
+      var result1 = auth.then(function () {
+          return st2client.stream.listen();
+        })
+        , result2 = auth.then(function () {
+          return st2client.stream.listen();
+        });
 
       return all([
         expect(result1).to.be.fulfilled,
@@ -56,8 +54,11 @@ describe('Stream', function () {
     });
 
     it('should notify about creation of ActionExecution', function () {
+      var listen = auth.then(function () {
+        return st2client.stream.listen();
+      });
 
-      return st2client.stream.listen().then(function (stream) {
+      return listen.then(function (stream) {
         var eventName = "st2.actionexecution__create";
         var payload = {
           action: 'core.local',
@@ -67,8 +68,18 @@ describe('Stream', function () {
         };
 
         var response = new Promise(function (resolve, reject) {
+          var resolver = function (event) {
+            request.then(function (execution) {
+              var data = JSON.parse(event.data);
+
+              if (execution.id === data.id) {
+                resolve(event);
+              }
+            });
+          };
+
           stream.onerror = reject;
-          stream.addEventListener(eventName, resolve);
+          stream.addEventListener(eventName, resolver);
         }).then(function (event) {
           expect(event).to.have.property('type', eventName);
           expect(event).to.have.property('data');
@@ -77,6 +88,8 @@ describe('Stream', function () {
           var data = JSON.parse(event.data);
           expect(data).to.have.property('action', payload.action);
           expect(data.parameters).to.be.deep.equal(payload.parameters);
+        }).finally(function () {
+          stream.removeAllListeners(eventName);
         });
 
         var request = st2client.actionExecutions.create(payload);
@@ -87,8 +100,11 @@ describe('Stream', function () {
     });
 
     it('should notify about updates during ActionExecution', function () {
+      var listen = auth.then(function () {
+        return st2client.stream.listen();
+      });
 
-      return st2client.stream.listen().then(function (stream) {
+      return listen.then(function (stream) {
         var eventName = "st2.actionexecution__update";
         var payload = {
           action: 'core.local',
@@ -98,8 +114,18 @@ describe('Stream', function () {
         };
 
         var response = new Promise(function (resolve, reject) {
+          var resolver = function (event) {
+            request.then(function (execution) {
+              var data = JSON.parse(event.data);
+
+              if (execution.id === data.id) {
+                resolve(event);
+              }
+            });
+          };
+
           stream.onerror = reject;
-          stream.addEventListener(eventName, resolve);
+          stream.addEventListener(eventName, resolver);
         }).then(function (event) {
           expect(event).to.have.property('type', eventName);
           expect(event).to.have.property('data');
@@ -108,6 +134,8 @@ describe('Stream', function () {
           var data = JSON.parse(event.data);
           expect(data).to.have.property('action', payload.action);
           expect(data.parameters).to.be.deep.equal(payload.parameters);
+        }).finally(function () {
+          stream.removeAllListeners(eventName);
         });
 
         var request = st2client.actionExecutions.create(payload);
@@ -118,6 +146,14 @@ describe('Stream', function () {
     });
 
 
+  });
+
+  after(function () {
+    auth.then(function () {
+      return st2client.stream.listen();
+    }).then(function (stream) {
+      stream.close();
+    });
   });
 
 });
