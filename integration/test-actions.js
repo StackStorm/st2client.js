@@ -6,21 +6,20 @@ var _ = require('lodash')
   , chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
   , rsvp = require('rsvp')
+  , config = require('./config.js')
   ;
 
 chai.use(chaiAsPromised);
 
 var all = rsvp.all
   , expect = chai.expect
-  , st2client = require('../index')({
-    rejectUnauthorized: false
-  })
+  , st2client = require('../index')(config)
   ;
 
 var MINIMUM_ENTITIES = 3;
 
 describe('Actions', function () {
-  var auth = st2client.authenticate('test', 'test');
+  var auth = st2client.authenticate(config.credentials.user, config.credentials.password);
 
   describe('#list()', function () {
     it('should return a promise of a list of actions', function () {
