@@ -60,7 +60,7 @@ module.exports = function (opts) {
     actions: endpoint('/actions', Opts, Readable, Enumerable),
     actionOverview: endpoint('/actions/views/overview', Opts, Readable, Enumerable),
     actionEntryPoint: endpoint('/actions/views/entry_point', Opts, Readable),
-    executions: endpoint('/executions', Opts, Readable, Paginatable, Watchable),
+    executions: endpoint('/executions', Opts, Readable, Writable, Paginatable, Watchable),
     executionsFilters: endpoint('/executions/views/filters', Opts, Enumerable),
     rules: endpoint('/rules', Opts, Readable, Writable, Enumerable),
     stream: endpoint('/stream', Opts, Streamable),
