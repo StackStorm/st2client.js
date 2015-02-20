@@ -17,13 +17,13 @@ var all = rsvp.all
 
 var MINIMUM_ENTITIES = 3;
 
-describe('History', function () {
+describe('Executions', function () {
   var auth = st2client.authenticate(config.credentials.user, config.credentials.password);
 
   describe('#list()', function () {
     it('should return a promise of a list of history records', function () {
       var result = auth.then(function () {
-        return st2client.history.list();
+        return st2client.executions.list();
       });
 
       return all([
@@ -39,13 +39,13 @@ describe('History', function () {
 
     it('should set total count of elements', function () {
       var result = auth.then(function () {
-        return st2client.history.list();
+        return st2client.executions.list();
       });
 
       return result.then(function () {
-        expect(st2client.history).to.have.property('total');
-        expect(st2client.history.total).to.be.a('number');
-        expect(st2client.history.total).to.be.at.least(MINIMUM_ENTITIES);
+        expect(st2client.executions).to.have.property('total');
+        expect(st2client.executions.total).to.be.a('number');
+        expect(st2client.executions.total).to.be.at.least(MINIMUM_ENTITIES);
       });
     });
 
@@ -53,7 +53,7 @@ describe('History', function () {
       var LIMIT = 10;
 
       var result = auth.then(function () {
-        return st2client.history.list({
+        return st2client.executions.list({
           limit: _.clone(LIMIT)
         });
       });
@@ -63,7 +63,7 @@ describe('History', function () {
         expect(result).to.eventually.be.an('array'),
         result.then(function (records) {
           expect(records).to.have.length.within(MINIMUM_ENTITIES, LIMIT);
-          expect(st2client.history.limit).to.be.within(MINIMUM_ENTITIES, LIMIT);
+          expect(st2client.executions.limit).to.be.within(MINIMUM_ENTITIES, LIMIT);
         })
       ]);
     });
@@ -73,7 +73,7 @@ describe('History', function () {
         , OFFSET = 10;
 
       var result = auth.then(function () {
-        return st2client.history.list({
+        return st2client.executions.list({
           limit: _.clone(LIMIT),
           offset: _.clone(OFFSET)
         });
@@ -93,10 +93,10 @@ describe('History', function () {
   describe('#get()', function () {
     it('should return a promise of a single action', function () {
       var result = auth.then(function () {
-        return st2client.history.list({
+        return st2client.executions.list({
           limit: 1
         }).then(function (records) {
-          return st2client.history.get(records[0].id);
+          return st2client.executions.get(records[0].id);
         });
       });
 
