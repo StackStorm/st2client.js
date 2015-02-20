@@ -59,7 +59,7 @@ describe('Stream', function () {
       });
 
       return listen.then(function (stream) {
-        var eventName = "st2.actionexecution__create";
+        var eventName = "st2.execution__create";
         var payload = {
           action: 'core.local',
           parameters: {
@@ -81,12 +81,14 @@ describe('Stream', function () {
           stream.onerror = reject;
           stream.addEventListener(eventName, resolver);
         }).then(function (event) {
+
           expect(event).to.have.property('type', eventName);
           expect(event).to.have.property('data');
           expect(event.data).to.be.a('string');
 
           var data = JSON.parse(event.data);
-          expect(data).to.have.property('action', payload.action);
+          expect(data).to.have.property('action');
+          expect(data.action.ref).to.be.equal(payload.action);
           expect(data.parameters).to.be.deep.equal(payload.parameters);
         }).finally(function () {
           stream.removeAllListeners(eventName);
@@ -105,7 +107,7 @@ describe('Stream', function () {
       });
 
       return listen.then(function (stream) {
-        var eventName = "st2.actionexecution__update";
+        var eventName = "st2.execution__update";
         var payload = {
           action: 'core.local',
           parameters: {
@@ -132,7 +134,8 @@ describe('Stream', function () {
           expect(event.data).to.be.a('string');
 
           var data = JSON.parse(event.data);
-          expect(data).to.have.property('action', payload.action);
+          expect(data).to.have.property('action');
+          expect(data.action.ref).to.be.equal(payload.action);
           expect(data.parameters).to.be.deep.equal(payload.parameters);
         }).finally(function () {
           stream.removeAllListeners(eventName);

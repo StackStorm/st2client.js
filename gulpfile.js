@@ -10,6 +10,9 @@ var gulp = require('gulp')
   , mochaPhantomJS = require('gulp-mocha-phantomjs')
   ;
 
+// Timeout for each integration test (in ms)
+var INTEGRATION_TEST_TIMEOUT = 4000;
+
 gulp.task('clean', function(cb) {
   del(['dist'], cb);
 });
@@ -52,8 +55,10 @@ gulp.task('test-browser', ['browserify', 'browserify-tests'], function () {
 });
 
 gulp.task('test-integration', function () {
+  var options = {'timeout': INTEGRATION_TEST_TIMEOUT};
+
   return gulp.src('integration/**/*.js', {read: false})
-    .pipe(mocha());
+    .pipe(mocha(options));
 });
 
 gulp.task('build', ['browserify']);
