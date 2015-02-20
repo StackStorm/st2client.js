@@ -30,9 +30,8 @@ describe('Index', function () {
     expect(index).to.have.property('actions');
     expect(index).to.have.property('actionOverview');
     expect(index).to.have.property('actionEntryPoint');
-    expect(index).to.have.property('actionExecutions');
-    expect(index).to.have.property('history');
-    expect(index).to.have.property('historyFilters');
+    expect(index).to.have.property('executions');
+    expect(index).to.have.property('executionsFilters');
     expect(index).to.have.property('rules');
     expect(index).to.have.property('triggerTypes');
   });
