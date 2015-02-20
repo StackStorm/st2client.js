@@ -52,6 +52,12 @@ Integration tests require `st2` to be present. To set up dev environment and run
 gulp test
 ```
 
+### Running Browser tests
+
+```bash
+gulp test-browser
+```
+
 ### Running Integration tests
 
 For the integration tests to work, all the StackStorm services including
