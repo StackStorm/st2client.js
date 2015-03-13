@@ -95,6 +95,25 @@ describe('Authenticatable', function () {
       ]);
     });
 
+    it('should connect to custom url if auth object provided', function () {
+      var api = endpoint('/tokens', Opts, {
+        auth: {
+          value: {
+            protocol: 'http',
+            host: 'custom',
+            port: '999'
+          }
+        }
+      }, Authenticatable);
+
+      nock('http://custom:999').post('/tokens')
+        .reply(201);
+
+      var result = api.authenticate('stanley', 'rocks');
+
+      return expect(result).to.be.fulfilled;
+    });
+
   });
 
 });
