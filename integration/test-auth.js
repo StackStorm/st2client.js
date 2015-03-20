@@ -35,8 +35,23 @@ describe('Auth', function () {
       ]);
     });
 
-    it('should reject the promise in case of wrong credentials', function () {
-      var result = st2client.auth.authenticate('test', 'wrongpassword');
+    it('should reject the promise in case of wrong password', function () {
+      var result = st2client.auth.authenticate(config.credentials.user, 'wrongpassword');
+
+      return all([
+        expect(result).to.be.rejected,
+        result.catch(function (err) {
+          expect(err).to.have.property('name', 'APIError');
+          expect(err).to.have.property('status', 401);
+          expect(err).to.have.property('message');
+        })
+      ]);
+
+    });
+
+    it('should reject the promise in case of wrong user name', function () {
+      var username = 'wronguser' + Math.floor(Math.random() * 10000);
+      var result = st2client.auth.authenticate(username, 'wrongpassword');
 
       return all([
         expect(result).to.be.rejected,
