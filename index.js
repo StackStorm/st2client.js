@@ -5,6 +5,7 @@ var url = require('url')
   , Readable = require('./lib/mixins/readable')
   , Writable = require('./lib/mixins/writable')
   , Editable = require('./lib/mixins/editable')
+  , Deletable = require('./lib/mixins/deletable')
   , Enumerable = require('./lib/mixins/enumerable')
   , Paginatable = require('./lib/mixins/paginatable')
   , Watchable = require('./lib/mixins/watchable')
@@ -63,7 +64,7 @@ module.exports = function (opts) {
     actionEntryPoint: endpoint('/actions/views/entry_point', Opts, Readable),
     executions: endpoint('/executions', Opts, Readable, Writable, Paginatable, Watchable),
     executionsFilters: endpoint('/executions/views/filters', Opts, Enumerable),
-    rules: endpoint('/rules', Opts, Readable, Writable, Editable, Enumerable),
+    rules: endpoint('/rules', Opts, Readable, Writable, Editable, Deletable, Enumerable),
     stream: endpoint('/stream', Opts, Streamable),
     triggerTypes: endpoint('/triggertypes', Opts, Readable, Enumerable),
 
