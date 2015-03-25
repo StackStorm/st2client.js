@@ -94,7 +94,7 @@ describe('Stream', function () {
           stream.removeAllListeners(eventName);
         });
 
-        var request = st2client.actionExecutions.create(payload);
+        var request = st2client.executions.create(payload);
 
         return all([request, response]);
       });
@@ -141,7 +141,7 @@ describe('Stream', function () {
           stream.removeAllListeners(eventName);
         });
 
-        var request = st2client.actionExecutions.create(payload);
+        var request = st2client.executions.create(payload);
 
         return all([request, response]);
       });

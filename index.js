@@ -17,13 +17,13 @@ module.exports = function (opts) {
 
   var Opts = {
     protocol: {
-      value: opts.protocol || 'http'
+      value: opts.protocol
     },
     host: {
-      value: opts.host || '172.168.50.50'
+      value: opts.host
     },
     port: {
-      value: opts.port || 9101
+      value: opts.port
     },
     api_version: {
       value: 'v' + (opts.api_version || 1)
