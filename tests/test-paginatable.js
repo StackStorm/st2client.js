@@ -68,7 +68,7 @@ describe('Paginatable', function () {
       var response = []
         ;
 
-      mock.get('/v1/test?a=b&limit=10&offset=0')
+      mock.get('/v1/test?limit=10&a=b&offset=0')
         .reply(200, response);
 
       var result = api.listPage(null, { a: 'b' });
@@ -110,6 +110,36 @@ describe('Paginatable', function () {
           expect(err).to.have.property('status', 400);
           expect(err).to.have.property('message', 'some');
         })
+      ]);
+    });
+
+    it('should prioritize query limit over default', function () {
+      var response = []
+        ;
+
+      mock.get('/v1/test?limit=100&a=b&offset=0')
+        .reply(200, response);
+
+      var result = api.listPage(null, { a: 'b', limit: 100 });
+
+      return all([
+        expect(result).to.eventually.be.an('array'),
+        expect(result).to.eventually.be.deep.equal(response)
+      ]);
+    });
+
+    it('should calculate offset properly for query limit', function () {
+      var response = []
+        ;
+
+      mock.get('/v1/test?limit=100&a=b&offset=400')
+        .reply(200, response);
+
+      var result = api.listPage(5, { a: 'b', limit: 100 });
+
+      return all([
+        expect(result).to.eventually.be.an('array'),
+        expect(result).to.eventually.be.deep.equal(response)
       ]);
     });
 
