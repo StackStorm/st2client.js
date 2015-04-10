@@ -8,6 +8,8 @@ var gulp = require('gulp')
   , glob = require('glob')
   , mocha = require('gulp-mocha')
   , mochaPhantomJS = require('gulp-mocha-phantomjs')
+  , size = require('gulp-size')
+  , buffer = require('vinyl-buffer')
   ;
 
 // Timeout for each integration test (in ms)
@@ -29,7 +31,15 @@ gulp.task('browserify', function() {
     standalone: 'st2client'
   }).bundle()
     .pipe(source('st2client.js'))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('dist'))
+    .pipe(buffer())
+    .pipe(size({
+      showFiles: true
+    }))
+    .pipe(size({
+      showFiles: true,
+      gzip: true
+    }));
 });
 
 gulp.task('browserify-tests', function() {
@@ -43,14 +53,14 @@ gulp.task('browserify-tests', function() {
 gulp.task('test', function () {
   return gulp.src('tests/**/*.js', {read: false})
     .pipe(mocha({
-      reporter: 'dot'
+      reporter: 'base'
     }));
 });
 
 gulp.task('test-browser', ['browserify', 'browserify-tests'], function () {
   return gulp.src('tests/tests.html')
     .pipe(mochaPhantomJS({
-      reporter: 'dot'
+      reporter: 'base'
     }));
 });
 
