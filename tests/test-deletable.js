@@ -15,7 +15,7 @@ nock.disableNetConnect();
 var all = rsvp.all
   , expect = chai.expect
   , Deletable = require('../lib/mixins/deletable')
-  , mock = nock('http://test:9101')
+  , mock = nock('http://localhost')
   ;
 
 describe('Deletable', function () {

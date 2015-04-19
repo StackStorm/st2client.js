@@ -4,13 +4,13 @@ var url = require('url');
 
 module.exports = {
   host: {
-    value: 'test'
+    value: undefined
   },
   auth: {
     value: {}
   },
   port: {
-    value: 9101
+    value: undefined
   },
   api_version: {
     value: 'v1'
@@ -25,7 +25,7 @@ module.exports = {
         protocol: this.protocol,
         hostname: this.host,
         port: this.port,
-        pathname: [this.api_version, this.path].join('')
+        pathname: ['/', this.api_version, this.path].join('')
       });
     }
   }

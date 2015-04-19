@@ -50,7 +50,7 @@ module.exports = function (opts) {
           protocol: this.protocol,
           hostname: this.host,
           port: this.port,
-          pathname: [this.api_version, this.path].join('')
+          pathname: ['/', this.api_version, this.path].join('')
         });
       }
     }
