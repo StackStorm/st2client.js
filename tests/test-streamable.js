@@ -31,7 +31,7 @@ nock.disableNetConnect();
 var all = rsvp.all
   , expect = chai.expect
   , Streamable = require('../lib/mixins/streamable')
-  , mock = nock('http://test:9101')
+  , mock = nock('http://localhost')
   ;
 
 describe('Streamable', function () {
@@ -53,7 +53,7 @@ describe('Streamable', function () {
         expect(result).to.be.fulfilled,
         result.then(function (source) {
           expect(source).to.be.instanceOf(EventSource);
-          expect(source).to.have.property('url', '//test:9101/v1/stream');
+          expect(source).to.have.property('url', '/v1/stream');
           source.close();
         })
       ]);
@@ -98,7 +98,7 @@ describe('Streamable', function () {
         expect(result).to.be.fulfilled,
         result.then(function (source) {
           expect(source).to.be.instanceOf(EventSource);
-          expect(source).to.have.property('url', '//test:9101/v1/stream?x-auth-token=DEADBEEF');
+          expect(source).to.have.property('url', '/v1/stream?x-auth-token=DEADBEEF');
           source.close();
         })
       ]);

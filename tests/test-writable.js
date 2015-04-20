@@ -15,7 +15,7 @@ nock.disableNetConnect();
 var all = rsvp.all
   , expect = chai.expect
   , Writable = require('../lib/mixins/writable')
-  , mock = nock('http://test:9101', {
+  , mock = nock('http://localhost', {
     reqheaders: {
       'content-type': 'application/json'
     }

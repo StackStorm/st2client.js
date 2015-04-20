@@ -16,7 +16,7 @@ nock.disableNetConnect();
 var all = rsvp.all
   , expect = chai.expect
   , Enumerable = require('../lib/mixins/enumerable')
-  , mock = nock('http://test:9101')
+  , mock = nock('http://localhost')
   ;
 
 describe('Enumerable', function () {

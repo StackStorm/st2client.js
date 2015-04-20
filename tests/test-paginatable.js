@@ -16,7 +16,7 @@ nock.disableNetConnect();
 var all = rsvp.all
   , expect = chai.expect
   , Paginatable = require('../lib/mixins/paginatable')
-  , mock = nock('http://test:9101')
+  , mock = nock('http://localhost')
   ;
 
 describe('Paginatable', function () {

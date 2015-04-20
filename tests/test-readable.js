@@ -15,7 +15,7 @@ nock.disableNetConnect();
 var all = rsvp.all
   , expect = chai.expect
   , Readable = require('../lib/mixins/readable')
-  , mock = nock('http://test:9101')
+  , mock = nock('http://localhost')
   ;
 
 describe('Readable', function () {
