@@ -27,10 +27,10 @@ describe('Readable', function () {
     it('should return a promise of a single entity', function () {
       var response = {};
 
-      mock.get('/v1/test/1')
+      mock.get('/v1/test/1?a=b')
         .reply(200, response);
 
-      var result = api.get(1);
+      var result = api.get(1, {a: 'b'});
 
       return all([
         expect(result).to.eventually.be.an('object'),
