@@ -13,13 +13,20 @@ chai.use(chaiAsPromised);
 
 var all = rsvp.all
   , expect = chai.expect
+  , Promise = rsvp.Promise
   , st2client = require('../index')(config)
   ;
 
 var MINIMUM_ENTITIES = 3;
 
 describe('Actions', function () {
-  var auth = st2client.authenticate(config.credentials.user, config.credentials.password);
+  var auth = (function () {
+    if (config.credentials) {
+      return st2client.authenticate(config.credentials.user, config.credentials.password);
+    } else {
+      return new Promise(function (resolve) { resolve(st2client); });
+    }
+  })();
 
   describe('#list()', function () {
     it('should return a promise of a list of actions', function () {

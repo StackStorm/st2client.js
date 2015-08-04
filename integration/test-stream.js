@@ -17,7 +17,13 @@ var all = rsvp.all
   ;
 
 describe('Stream', function () {
-  var auth = st2client.authenticate(config.credentials.user, config.credentials.password);
+  var auth = (function () {
+    if (config.credentials) {
+      return st2client.authenticate(config.credentials.user, config.credentials.password);
+    } else {
+      return new Promise(function (resolve) { resolve(st2client); });
+    }
+  })();
 
   describe('#listen()', function () {
     it('should return a promise of an event source', function () {
