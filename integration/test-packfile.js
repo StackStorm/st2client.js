@@ -1,8 +1,7 @@
 /*global describe, it*/
 'use strict';
 
-var _ = require('lodash')
-  , chai = require('chai')
+var chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
   , rsvp = require('rsvp')
   , config = require('./config.js')
@@ -16,7 +15,7 @@ var all = rsvp.all
   , st2client = require('../index')(config)
   ;
 
-describe('Pack Files', function () {
+describe('Pack File', function () {
   var auth = (function () {
     if (config.credentials) {
       return st2client.authenticate(config.credentials.user, config.credentials.password);
@@ -26,20 +25,14 @@ describe('Pack Files', function () {
   })();
 
   describe('#get()', function () {
-    it('should return a promise of a all the files', function () {
+    it('should return a promise of a single file', function () {
       var result = auth.then(function () {
-        return st2client.packFiles.get('core');
+        return st2client.packFile.get('core/actions/local.yaml');
       });
 
       return all([
         expect(result).to.be.fulfilled,
-        expect(result).to.eventually.be.an('array'),
-        result.then(function (files) {
-          return _.every(files, function (file) {
-            expect(file).to.have.property('content');
-            expect(file).to.have.property('file_path');
-          });
-        })
+        expect(result).to.eventually.be.a('string')
       ]);
     });
   });

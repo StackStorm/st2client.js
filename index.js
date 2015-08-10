@@ -69,6 +69,7 @@ module.exports = function (opts) {
     executionsFilters: endpoint('/executions/views/filters', Opts, Enumerable),
     packs: endpoint('/packs', Opts, Readable),
     packFiles: endpoint('/packs/views/files', Opts, Readable),
+    packFile: endpoint('/packs/views/file', Opts, Readable),
     rules: endpoint('/rules', Opts, Readable, Writable, Editable, Deletable, Enumerable),
     stream: endpoint('/stream', Opts, Streamable),
     triggerTypes: endpoint('/triggertypes', Opts, Readable, Enumerable),
