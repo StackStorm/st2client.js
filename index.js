@@ -61,7 +61,7 @@ module.exports = function (opts) {
   return {
     auth: endpoint('/tokens', Opts, Authenticatable),
 
-    actions: endpoint('/actions', Opts, Readable, Enumerable),
+    actions: endpoint('/actions', Opts, Readable, Enumerable, Writable, Editable, Deletable),
     actionOverview: endpoint('/actions/views/overview', Opts, Readable, Enumerable),
     actionEntryPoint: endpoint('/actions/views/entry_point', Opts, Readable),
     executions: endpoint('/executions', Opts, Readable, Writable, Paginatable, Watchable,
