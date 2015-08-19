@@ -2,7 +2,6 @@
 'use strict';
 
 var _ = require('lodash')
-  , assign = Object.assign || require('object.assign')
   , chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
   , rsvp = require('rsvp')
@@ -13,13 +12,46 @@ chai.use(chaiAsPromised);
 
 var all = rsvp.all
   , expect = chai.expect
+  , Promise = rsvp.Promise
   , st2client = require('../index')(config)
   ;
 
 var MINIMUM_ENTITIES = 3;
 
+var ACTION1 = {
+  name: 'st2.dummy.action1',
+  description: 'test description',
+  enabled: true,
+  pack: 'default',
+  entry_point: '/tmp/test/action1.sh',
+  runner_type: 'local-shell-script',
+  parameters: {
+    a: {
+      type: 'string',
+      default: 'A1'
+    },
+    b: {
+      type: 'string',
+      default: 'B1'
+    }
+  },
+  tags: [{
+    name: 'tag1',
+    value: 'dont-care'
+  }, {
+    name: 'tag2',
+    value: 'dont-care'
+  }]
+};
+
 describe('Actions', function () {
-  var auth = st2client.authenticate(config.credentials.user, config.credentials.password);
+  var auth = (function () {
+    if (config.credentials) {
+      return st2client.authenticate(config.credentials.user, config.credentials.password);
+    } else {
+      return new Promise(function (resolve) { resolve(st2client); });
+    }
+  })();
 
   describe('#list()', function () {
     it('should return a promise of a list of actions', function () {
@@ -70,6 +102,80 @@ describe('Actions', function () {
         expect(result).to.be.fulfilled,
         expect(result).to.eventually.be.an('object')
         // TODO: consider checking against jsonschema
+      ]);
+    });
+  });
+
+  describe('#create()', function () {
+    it('should return a promise of created action', function () {
+      var result = auth.then(function () {
+        return st2client.actions.create(ACTION1);
+      });
+
+      return all([
+        expect(result).to.be.fulfilled,
+        expect(result).to.eventually.be.an('object')
+        // TODO: consider checking against jsonschema
+      ]);
+    });
+
+    after(function () {
+      auth.then(function () {
+        st2client.actions.delete(ACTION1.pack + '.' + ACTION1.name);
+      });
+    });
+  });
+
+  describe('#edit()', function () {
+    var action;
+
+    before(function () {
+      action = auth.then(function () {
+        return st2client.actions.create(ACTION1);
+      });
+    });
+
+    it('should return a promise of edited action', function () {
+      var resultEdit = action.then(function (existing) {
+        var changed = _.assign({}, existing, { description: 'some' });
+        return st2client.actions.edit(changed);
+      });
+      var resultGet = resultEdit.then(function (changed) {
+        return st2client.actions.get(changed.pack + '.' + changed.name);
+      });
+
+      return all([
+        expect(resultEdit).to.be.fulfilled,
+        expect(resultEdit).to.eventually.be.an('object'),
+        expect(resultEdit).to.eventually.have.property('description', 'some'),
+        expect(resultGet).to.be.fulfilled,
+        expect(resultGet).to.eventually.be.an('object'),
+        expect(resultGet).to.eventually.have.property('description', 'some'),
+      ]);
+    });
+
+    after(function () {
+      auth.then(function () {
+        st2client.actions.delete(ACTION1.pack + '.' + ACTION1.name);
+      });
+    });
+  });
+
+  describe('#delete()', function () {
+    before(function () {
+      auth.then(function () {
+        st2client.actions.create(ACTION1);
+      });
+    });
+
+    it('should return a promise of deleted action', function () {
+      var result = auth.then(function () {
+        return st2client.actions.delete(ACTION1.pack + '.' + ACTION1.name);
+      });
+
+      return all([
+        expect(result).to.be.fulfilled,
+        expect(result).to.eventually.be.equal('null')
       ]);
     });
   });

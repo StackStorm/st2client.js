@@ -15,7 +15,9 @@ var all = rsvp.all
   , st2client = require('../index')(config)
   ;
 
-describe('Auth', function () {
+var prescribe = config.credentials ? describe : describe.skip;
+
+prescribe('Auth', function () {
   describe('#authenticate()', function () {
 
     // Apache takes a lot of time to spin up so the test may fail by timeout. Increase timeout or
