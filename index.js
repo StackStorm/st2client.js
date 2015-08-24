@@ -18,7 +18,9 @@ var _ = require('lodash')
   ;
 
 module.exports = function (opts) {
-  opts = _.assign({}, opts);
+  opts = _.assign({
+    token: {}
+  }, opts);
 
   var Opts = {
     protocol: {
@@ -78,7 +80,7 @@ module.exports = function (opts) {
 
     token: opts.token,
     setToken: function (token) {
-      opts.token = token;
+      _.assign(opts.token, token);
       return this;
     },
     authenticate: function (user, password) {

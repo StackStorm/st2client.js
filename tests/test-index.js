@@ -42,7 +42,7 @@ describe('Index', function () {
 
     var index = Index(opts);
 
-    index.setToken('some');
+    index.setToken({ token: 'DEADBEEF' });
 
     expect(opts.token).to.be.equal(undefined);
   });
@@ -50,11 +50,11 @@ describe('Index', function () {
   describe('#setToken()', function () {
 
     it('should update the token on the endpoints', function () {
-      var token = 'DEADBEEF';
+      var token = { token: 'DEADBEEF' };
 
       index.setToken(token);
 
-      expect(index.actions.token).to.equal(token);
+      expect(index.actions.token).to.deep.equal(token);
     });
 
   });
@@ -62,7 +62,7 @@ describe('Index', function () {
   describe('#authenticate()', function () {
 
     it('should update the token on the endpoints', function () {
-      var token = 'DEADBEEF';
+      var token = { token: 'DEADBEEF' };
 
       index.auth = {
         authenticate: function () {
@@ -76,9 +76,9 @@ describe('Index', function () {
 
       return all([
         expect(promise).to.eventually.fulfill,
-        expect(promise).to.eventually.be.equal(token),
+        expect(promise).to.eventually.be.deep.equal(token),
         promise.then(function () {
-          expect(index.actions.token).to.equal(token);
+          expect(index.actions.token).to.deep.equal(token);
         })
       ]);
     });
