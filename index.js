@@ -13,6 +13,7 @@ var url = require('url')
   , Streamable = require('./lib/mixins/streamable')
   , Attributable = require('./lib/mixins/attributable')
   , Repeatable = require('./lib/mixins/repeatable')
+  , Routable = require('./lib/mixins/routable')
   ;
 
 module.exports = function (opts) {
@@ -69,7 +70,7 @@ module.exports = function (opts) {
     executionsFilters: endpoint('/executions/views/filters', Opts, Enumerable),
     packs: endpoint('/packs', Opts, Readable, Enumerable),
     packFiles: endpoint('/packs/views/files', Opts, Readable),
-    packFile: endpoint('/packs/views/file', Opts, Readable),
+    packFile: endpoint('/packs/views/file', Opts, Readable, Routable),
     rules: endpoint('/rules', Opts, Readable, Writable, Editable, Deletable, Enumerable),
     stream: endpoint('/stream', Opts, Streamable),
     triggerTypes: endpoint('/triggertypes', Opts, Readable, Enumerable),
