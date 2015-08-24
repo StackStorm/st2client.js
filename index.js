@@ -67,7 +67,7 @@ module.exports = function (opts) {
     executions: endpoint('/executions', Opts, Readable, Writable, Paginatable, Watchable,
       Attributable, Repeatable),
     executionsFilters: endpoint('/executions/views/filters', Opts, Enumerable),
-    packs: endpoint('/packs', Opts, Readable),
+    packs: endpoint('/packs', Opts, Readable, Enumerable),
     packFiles: endpoint('/packs/views/files', Opts, Readable),
     packFile: endpoint('/packs/views/file', Opts, Readable),
     rules: endpoint('/rules', Opts, Readable, Writable, Editable, Deletable, Enumerable),
