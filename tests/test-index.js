@@ -36,6 +36,17 @@ describe('Index', function () {
     expect(index).to.have.property('triggerTypes');
   });
 
+  it('should not leak the token into opts', function () {
+    var Index = require('../index');
+    var opts = {};
+
+    var index = Index(opts);
+
+    index.setToken('some');
+
+    expect(opts.token).to.be.equal(undefined);
+  });
+
   describe('#setToken()', function () {
 
     it('should update the token on the endpoints', function () {
