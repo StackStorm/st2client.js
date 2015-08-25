@@ -1,6 +1,7 @@
 'use strict';
 
-var url = require('url')
+var _ = require('lodash')
+  , url = require('url')
   , endpoint = require('./lib/endpoint')
   , Readable = require('./lib/mixins/readable')
   , Writable = require('./lib/mixins/writable')
@@ -17,7 +18,9 @@ var url = require('url')
   ;
 
 module.exports = function (opts) {
-  opts = opts || {};
+  opts = _.assign({
+    token: {}
+  }, opts);
 
   var Opts = {
     protocol: {
@@ -75,8 +78,9 @@ module.exports = function (opts) {
     stream: endpoint('/stream', Opts, Streamable),
     triggerTypes: endpoint('/triggertypes', Opts, Readable, Enumerable),
 
+    token: opts.token,
     setToken: function (token) {
-      opts.token = token;
+      _.assign(opts.token, token);
       return this;
     },
     authenticate: function (user, password) {
