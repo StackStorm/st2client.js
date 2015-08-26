@@ -1,3 +1,4 @@
+/*jshint -W030*/
 /*global Promise:true, describe, it*/
 'use strict';
 
@@ -45,6 +46,24 @@ describe('Index', function () {
     index.setToken({ token: 'DEADBEEF' });
 
     expect(opts.token).to.be.equal(undefined);
+  });
+
+  it('should accept token being declared', function () {
+    var Index = require('../index');
+    var opts = { token: { token: 'some' } };
+
+    var index = Index(opts);
+
+    expect(index.token).to.be.deep.equal(opts.token);
+  });
+
+  it('should accept token being declared by undefined', function () {
+    var Index = require('../index');
+    var opts = { token: undefined };
+
+    var index = Index(opts);
+
+    expect(index.token).to.be.an('object').and.empty;
   });
 
   describe('#setToken()', function () {
