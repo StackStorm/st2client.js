@@ -75,6 +75,7 @@ module.exports = function (opts) {
     packFiles: endpoint('/packs/views/files', Opts, Readable),
     packFile: endpoint('/packs/views/file', Opts, Readable, Routable),
     rules: endpoint('/rules', Opts, Readable, Writable, Editable, Deletable, Enumerable),
+    ruleOverview: endpoint('/rules/views', Opts, Readable, Enumerable),
     stream: endpoint('/stream', Opts, Streamable),
     triggerTypes: endpoint('/triggertypes', Opts, Readable, Enumerable),
 
