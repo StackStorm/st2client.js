@@ -22,7 +22,7 @@ var chai = require('chai')
   , nock = require('nock')
   , rsvp = require('rsvp')
   , Opts = require('./opts')
-  , EventSource = global.EventSource || require('eventsource')
+  , EventSource = global.EventSource || require('eventsource'+'')
   ;
 
 chai.use(chaiAsPromised);
