@@ -63,6 +63,8 @@ module.exports = function (opts) {
   };
 
   return {
+    index: endpoint('/', Opts),
+
     auth: endpoint('/tokens', Opts, Authenticatable),
 
     actions: endpoint('/actions', Opts, Readable, Enumerable, Writable, Editable, Deletable),
