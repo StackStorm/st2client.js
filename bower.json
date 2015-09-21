@@ -1,7 +1,7 @@
 {
   "name": "st2client",
   "main": "dist/st2client.js",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "homepage": "https://github.com/StackStorm/st2client.js",
   "authors": [
     "Kirill Izotov <enykeev@stackstorm.com>"
