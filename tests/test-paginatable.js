@@ -6,15 +6,13 @@ var assign = Object.assign || require('object.assign')
   , chaiAsPromised = require("chai-as-promised")
   , endpoint = require('../lib/endpoint')
   , nock = require('nock')
-  , rsvp = require('rsvp')
   , Opts = require('./opts')
   ;
 
 chai.use(chaiAsPromised);
 nock.disableNetConnect();
 
-var all = rsvp.all
-  , expect = chai.expect
+var expect = chai.expect
   , Paginatable = require('../lib/mixins/paginatable')
   , mock = nock('http://localhost')
   ;
@@ -43,7 +41,7 @@ describe('Paginatable', function () {
 
       var result = api.listPage();
 
-      return all([
+      return Promise.all([
         expect(result).to.eventually.be.an('array'),
         expect(result).to.eventually.be.deep.equal(response)
       ]);
@@ -58,7 +56,7 @@ describe('Paginatable', function () {
 
       var result = api.listPage(6);
 
-      return all([
+      return Promise.all([
         expect(result).to.eventually.be.an('array'),
         expect(result).to.eventually.be.deep.equal(response)
       ]);
@@ -73,7 +71,7 @@ describe('Paginatable', function () {
 
       var result = api.listPage(null, { a: 'b' });
 
-      return all([
+      return Promise.all([
         expect(result).to.eventually.be.an('array'),
         expect(result).to.eventually.be.deep.equal(response)
       ]);
@@ -103,7 +101,7 @@ describe('Paginatable', function () {
 
       var result = api.listPage();
 
-      return all([
+      return Promise.all([
         expect(result).to.be.rejected,
         result.catch(function (err) {
           expect(err).to.have.property('name', 'APIError');
@@ -122,7 +120,7 @@ describe('Paginatable', function () {
 
       var result = api.listPage(null, { a: 'b', limit: 100 });
 
-      return all([
+      return Promise.all([
         expect(result).to.eventually.be.an('array'),
         expect(result).to.eventually.be.deep.equal(response)
       ]);
@@ -137,7 +135,7 @@ describe('Paginatable', function () {
 
       var result = api.listPage(5, { a: 'b', limit: 100 });
 
-      return all([
+      return Promise.all([
         expect(result).to.eventually.be.an('array'),
         expect(result).to.eventually.be.deep.equal(response)
       ]);

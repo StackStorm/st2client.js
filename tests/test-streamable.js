@@ -20,7 +20,6 @@ var chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
   , endpoint = require('../lib/endpoint')
   , nock = require('nock')
-  , rsvp = require('rsvp')
   , Opts = require('./opts')
   , EventSource = global.EventSource || require('eventsource')
   ;
@@ -28,8 +27,7 @@ var chai = require('chai')
 chai.use(chaiAsPromised);
 nock.disableNetConnect();
 
-var all = rsvp.all
-  , expect = chai.expect
+var expect = chai.expect
   , Streamable = require('../lib/mixins/streamable')
   , mock = nock('http://localhost')
   ;
@@ -49,7 +47,7 @@ describe('Streamable', function () {
 
       var result = api.listen();
 
-      return all([
+      return Promise.all([
         expect(result).to.be.fulfilled,
         result.then(function (source) {
           expect(source).to.be.instanceOf(EventSource);
@@ -66,7 +64,7 @@ describe('Streamable', function () {
       var result1 = api.listen()
         , result2 = api.listen();
 
-      return all([
+      return Promise.all([
         expect(result1).to.be.fulfilled,
         expect(result1).to.be.fulfilled,
         result1.then(function (source1) {
@@ -94,7 +92,7 @@ describe('Streamable', function () {
 
       var result = api.listen();
 
-      return all([
+      return Promise.all([
         expect(result).to.be.fulfilled,
         result.then(function (source) {
           expect(source).to.be.instanceOf(EventSource);

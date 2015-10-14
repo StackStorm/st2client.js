@@ -4,14 +4,11 @@
 
 var chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
-  , rsvp = require('rsvp')
   ;
 
 chai.use(chaiAsPromised);
 
-var all = rsvp.all
-  , expect = chai.expect
-  , Promise = rsvp.Promise
+var expect = chai.expect
   , index;
 
 describe('Index', function () {
@@ -93,7 +90,7 @@ describe('Index', function () {
 
       var promise = index.authenticate();
 
-      return all([
+      return Promise.all([
         expect(promise).to.eventually.fulfill,
         expect(promise).to.eventually.be.deep.equal(token),
         promise.then(function () {

@@ -6,15 +6,13 @@ var assign = Object.assign || require('object.assign')
   , chaiAsPromised = require("chai-as-promised")
   , endpoint = require('../lib/endpoint')
   , nock = require('nock')
-  , rsvp = require('rsvp')
   , Opts = require('./opts')
   ;
 
 chai.use(chaiAsPromised);
 nock.disableNetConnect();
 
-var all = rsvp.all
-  , expect = chai.expect
+var expect = chai.expect
   , Enumerable = require('../lib/mixins/enumerable')
   , mock = nock('http://localhost')
   ;
@@ -34,7 +32,7 @@ describe('Enumerable', function () {
 
       var result = api.listAll();
 
-      return all([
+      return Promise.all([
         expect(result).to.eventually.be.an('array'),
         expect(result).to.eventually.be.deep.equal(response)
       ]);
@@ -49,7 +47,7 @@ describe('Enumerable', function () {
 
       var result = api.listAll({ a: 'b' });
 
-      return all([
+      return Promise.all([
         expect(result).to.eventually.be.an('array'),
         expect(result).to.eventually.be.deep.equal(response)
       ]);
@@ -61,7 +59,7 @@ describe('Enumerable', function () {
 
       var result = api.listAll({});
 
-      return all([
+      return Promise.all([
         expect(result).to.be.rejected,
         result.catch(function (err) {
           expect(err).to.have.property('name', 'APIError');

@@ -4,15 +4,12 @@
 var _ = require('lodash')
   , chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
-  , rsvp = require('rsvp')
   , config = require('./config.js')
   ;
 
 chai.use(chaiAsPromised);
 
-var all = rsvp.all
-  , expect = chai.expect
-  , Promise = rsvp.Promise
+var expect = chai.expect
   , st2client = require('../index')(config)
   ;
 
@@ -59,7 +56,7 @@ describe('Actions', function () {
         return st2client.actions.list();
       });
 
-      return all([
+      return Promise.all([
         expect(result).to.be.fulfilled,
         expect(result).to.eventually.be.an('array'),
         // 'length.of.at.least' is broken when used along with 'evantually'
@@ -81,7 +78,7 @@ describe('Actions', function () {
         });
       });
 
-      return all([
+      return Promise.all([
         expect(result).to.be.fulfilled,
         expect(result).to.eventually.be.an('array'),
         result.then(function (actions) {
@@ -98,7 +95,7 @@ describe('Actions', function () {
         return st2client.actions.get('core.local');
       });
 
-      return all([
+      return Promise.all([
         expect(result).to.be.fulfilled,
         expect(result).to.eventually.be.an('object')
         // TODO: consider checking against jsonschema
@@ -112,7 +109,7 @@ describe('Actions', function () {
         return st2client.actions.create(ACTION1);
       });
 
-      return all([
+      return Promise.all([
         expect(result).to.be.fulfilled,
         expect(result).to.eventually.be.an('object')
         // TODO: consider checking against jsonschema
@@ -144,7 +141,7 @@ describe('Actions', function () {
         return st2client.actions.get(changed.pack + '.' + changed.name);
       });
 
-      return all([
+      return Promise.all([
         expect(resultEdit).to.be.fulfilled,
         expect(resultEdit).to.eventually.be.an('object'),
         expect(resultEdit).to.eventually.have.property('description', 'some'),
@@ -173,7 +170,7 @@ describe('Actions', function () {
         return st2client.actions.delete(ACTION1.pack + '.' + ACTION1.name);
       });
 
-      return all([
+      return Promise.all([
         expect(result).to.be.fulfilled,
         expect(result).to.eventually.be.equal('null')
       ]);

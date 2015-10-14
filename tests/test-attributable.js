@@ -5,15 +5,13 @@ var chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
   , endpoint = require('../lib/endpoint')
   , nock = require('nock')
-  , rsvp = require('rsvp')
   , Opts = require('./opts')
   ;
 
 chai.use(chaiAsPromised);
 nock.disableNetConnect();
 
-var all = rsvp.all
-  , expect = chai.expect
+var expect = chai.expect
   , Attributable = require('../lib/mixins/attributable')
   , mock = nock('http://localhost')
   ;
@@ -32,7 +30,7 @@ describe('Attributable', function () {
 
       var result = api.attribute(1, 'some');
 
-      return all([
+      return Promise.all([
         expect(result).to.eventually.be.an('object'),
         expect(result).to.eventually.be.deep.equal(response)
       ]);
@@ -64,7 +62,7 @@ describe('Attributable', function () {
 
       var result = api.attribute(1, 'some');
 
-      return all([
+      return Promise.all([
         expect(result).to.be.rejected,
         result.catch(function (err) {
           expect(err).to.have.property('name', 'APIError');

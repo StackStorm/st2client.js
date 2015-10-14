@@ -3,15 +3,12 @@
 
 var chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
-  , rsvp = require('rsvp')
   , config = require('./config.js')
   ;
 
 chai.use(chaiAsPromised);
 
-var all = rsvp.all
-  , expect = chai.expect
-  , Promise = rsvp.Promise
+var expect = chai.expect
   , st2client = require('../index')(config)
   ;
 
@@ -60,7 +57,7 @@ describe('Pack File', function () {
         return st2client.packFile.get('default/actions/stuff/some.txt');
       });
 
-      return all([
+      return Promise.all([
         expect(result).to.be.fulfilled,
         expect(result).to.eventually.be.a('string'),
         expect(result).to.eventually.be.equal(ACTION1.data_files[0].content)

@@ -6,16 +6,13 @@ var assign = Object.assign || require('object.assign')
   , chaiAsPromised = require("chai-as-promised")
   , endpoint = require('../lib/endpoint')
   , nock = require('nock')
-  , rsvp = require('rsvp')
   , Opts = require('./opts')
   ;
 
 chai.use(chaiAsPromised);
 nock.disableNetConnect();
 
-var all = rsvp.all
-  , expect = chai.expect
-  , Promise = rsvp.Promise
+var expect = chai.expect
   , Watchable = require('../lib/mixins/watchable')
   ;
 
@@ -38,7 +35,7 @@ describe('Watchable', function () {
         return true;
       });
 
-      return all([
+      return Promise.all([
         expect(result).to.eventually.be.an('object'),
         expect(result).to.eventually.be.deep.equal(response)
       ]);
@@ -85,7 +82,7 @@ describe('Watchable', function () {
         return true;
       });
 
-      return all([
+      return Promise.all([
         expect(result).to.be.rejected,
         result.catch(function (err) {
           expect(err).to.be.equal(error);

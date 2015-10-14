@@ -3,16 +3,13 @@
 
 var chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
-  , rsvp = require('rsvp')
   , EventSource = global.EventSource || require('eventsource')
   , config = require('./config.js')
   ;
 
 chai.use(chaiAsPromised);
 
-var all = rsvp.all
-  , expect = chai.expect
-  , Promise = rsvp.Promise
+var expect = chai.expect
   , st2client = require('../index')(config)
   ;
 
@@ -31,7 +28,7 @@ describe('Stream', function () {
         return st2client.stream.listen();
       });
 
-      return all([
+      return Promise.all([
         expect(listen).to.be.fulfilled,
         listen.then(function (source) {
           expect(source).to.be.instanceOf(EventSource);
@@ -48,10 +45,10 @@ describe('Stream', function () {
           return st2client.stream.listen();
         });
 
-      return all([
+      return Promise.all([
         expect(result1).to.be.fulfilled,
         expect(result2).to.be.fulfilled,
-        all([result1, result2]).then(function (sources) {
+        Promise.all([result1, result2]).then(function (sources) {
           expect(sources).to.be.an('array');
           expect(sources).to.have.length(2);
           expect(sources[0]).to.be.equal(sources[1]);
@@ -96,13 +93,17 @@ describe('Stream', function () {
           expect(data).to.have.property('action');
           expect(data.action.ref).to.be.equal(payload.action);
           expect(data.parameters).to.be.deep.equal(payload.parameters);
-        }).finally(function () {
+        });
+
+        response.catch(function () {
+          return;
+        }).then(function () {
           stream.removeAllListeners(eventName);
         });
 
         var request = st2client.executions.create(payload);
 
-        return all([request, response]);
+        return Promise.all([request, response]);
       });
 
     });
@@ -143,13 +144,17 @@ describe('Stream', function () {
           expect(data).to.have.property('action');
           expect(data.action.ref).to.be.equal(payload.action);
           expect(data.parameters).to.be.deep.equal(payload.parameters);
-        }).finally(function () {
+        });
+
+        response.catch(function () {
+          return;
+        }).then(function () {
           stream.removeAllListeners(eventName);
         });
 
         var request = st2client.executions.create(payload);
 
-        return all([request, response]);
+        return Promise.all([request, response]);
       });
 
     });

@@ -5,14 +5,12 @@ var assign = Object.assign || require('object.assign')
   , chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
   , nock = require('nock')
-  , rsvp = require('rsvp')
   ;
 
 chai.use(chaiAsPromised);
 nock.disableNetConnect();
 
-var all = rsvp.all
-  , expect = chai.expect
+var expect = chai.expect
   , request = require('../lib/request')
   , mock = nock('http://test:9101')
   ;
@@ -31,7 +29,7 @@ describe('Request factory', function () {
 
     var promise = request(params);
 
-    return all([
+    return Promise.all([
       expect(promise).to.eventually.be.an('object'),
       expect(promise).to.eventually.have.property('statusCode', 200),
       expect(promise).to.eventually.have.property('body', 'some')
@@ -68,7 +66,7 @@ describe('Request factory', function () {
 
     var promise = request(params);
 
-    return all([
+    return Promise.all([
       expect(promise).to.eventually.have.property('body'),
       promise.then(function (res) {
         expect(res.body).to.be.an('object');
@@ -111,7 +109,7 @@ describe('Request factory', function () {
   it('should throw an error if no params are provided', function () {
     var promise = request({});
 
-    return all([
+    return Promise.all([
       expect(promise).to.be.rejected,
       promise.catch(function (err) {
         expect(err.name).to.be.equal('RequestError');
