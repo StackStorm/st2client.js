@@ -1,8 +1,7 @@
 /*global describe, it*/
 'use strict';
 
-var _ = require('lodash')
-  , chai = require('chai')
+var chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
   , config = require('./config.js')
   ;
@@ -58,7 +57,7 @@ describe('Executions', function () {
 
       var result = auth.then(function () {
         return st2client.executions.list({
-          limit: _.clone(LIMIT)
+          limit: LIMIT
         });
       });
 
@@ -78,8 +77,8 @@ describe('Executions', function () {
 
       var result = auth.then(function () {
         return st2client.executions.list({
-          limit: _.clone(LIMIT),
-          offset: _.clone(OFFSET)
+          limit: LIMIT,
+          offset: OFFSET
         });
       });
 

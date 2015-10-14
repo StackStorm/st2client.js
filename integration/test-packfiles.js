@@ -1,8 +1,7 @@
 /*global describe, it*/
 'use strict';
 
-var _ = require('lodash')
-  , chai = require('chai')
+var chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
   , config = require('./config.js')
   ;
@@ -32,7 +31,8 @@ describe('Pack Files', function () {
         expect(result).to.be.fulfilled,
         expect(result).to.eventually.be.an('array'),
         result.then(function (files) {
-          return _.every(files, function (file) {
+          expect(files).to.have.length.above(0);
+          return files.forEach(function (file) {
             expect(file).to.have.property('content');
             expect(file).to.have.property('file_path');
           });
