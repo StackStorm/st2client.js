@@ -97,29 +97,15 @@ describe('Request factory', function () {
     return expect(promise).to.be.fulfilled;
   });
 
-  it('should stringify body as json if proper content type is provided', function () {
+  it('should stringify body as json', function () {
     mock.post('/test')
-      .reply(200);
-
-    var promise = request(assign({}, params, {
-      method: 'post',
-      headers: {
-        'content-type': 'application/json'
-      }
-    }), {a: 'b'});
-
-    return expect(promise).to.be.fulfilled;
-  });
-
-  it('should throw an error if body is not string or is sent without proper headers', function () {
-    mock.post('/test', { a: 'b' })
       .reply(200);
 
     var promise = request(assign({}, params, {
       method: 'post'
     }), {a: 'b'});
 
-    return expect(promise).to.be.rejectedWith(TypeError, 'Body is not a string');
+    return expect(promise).to.be.fulfilled;
   });
 
   it('should throw an error if no params are provided', function () {

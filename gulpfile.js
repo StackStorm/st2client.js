@@ -1,5 +1,6 @@
 'use strict';
 var gulp = require('gulp')
+  , assign = Object.assign || require('object.assign')
   , del = require('del')
   , jshint = require('gulp-jshint')
   , plumber = require('gulp-plumber')
@@ -8,7 +9,20 @@ var gulp = require('gulp')
   , glob = require('glob')
   , mocha = require('gulp-mocha')
   , mochaPhantomJS = require('gulp-mocha-phantomjs')
+  , size = require('gulp-size')
+  , sourcemaps = require('gulp-sourcemaps')
+  , buffer = require('vinyl-buffer')
   ;
+
+var builtins = assign({}, require('browserify/lib/builtins'), {
+  http: require.resolve('./lib/util/http'),
+  https: require.resolve('./lib/util/https'),
+  // This one deserves a massive warning:
+  // BEWARE, NOCK IN BROWSER TESTS IS NOT THE SAME AS THE ONE IN NODE TESTS
+  // I'm overriding it here to reduce the size of diff.
+  // TODO: inline the change during refactoring
+  nock: require.resolve('./lib/util/mock')
+});
 
 // Timeout for each integration test (in ms)
 var INTEGRATION_TEST_TIMEOUT = 4000;
@@ -26,31 +40,47 @@ gulp.task('lint', function() {
 
 gulp.task('browserify', function() {
   return browserify('./index.js', {
-    standalone: 'st2client'
+    standalone: 'st2client',
+    builtins: builtins
   }).bundle()
     .pipe(source('st2client.js'))
-    .pipe(gulp.dest('dist'));
+    .pipe(buffer())
+    .pipe(gulp.dest('dist'))
+    .pipe(size({
+      showFiles: true
+    }))
+    .pipe(size({
+      showFiles: true,
+      gzip: true
+    }));
 });
 
 gulp.task('browserify-tests', function() {
   return browserify(glob.sync('./tests/test-*.js'), {
-    debug: true
+    debug: true,
+    builtins: builtins
   }).bundle()
     .pipe(source('tests.js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({ loadMaps: true }))
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('dist'));
 });
 
 gulp.task('test', function () {
   return gulp.src('tests/**/*.js', {read: false})
     .pipe(mocha({
-      reporter: 'dot'
+      reporter: process.env.reporter || 'base'
     }));
 });
 
 gulp.task('test-browser', ['browserify', 'browserify-tests'], function () {
   return gulp.src('tests/tests.html')
     .pipe(mochaPhantomJS({
-      reporter: 'dot'
+      reporter: process.env.reporter || 'base',
+      phantomjs: {
+        useColors: true
+      }
     }));
 });
 

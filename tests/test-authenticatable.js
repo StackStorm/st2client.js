@@ -17,7 +17,7 @@ var all = rsvp.all
   , Authenticatable = require('../lib/mixins/authenticatable')
   , mock = nock('http://localhost:9100', {
     reqheaders: {
-      'content-type': 'application/json'
+      'content-type': 'application/x-www-form-urlencoded'
     }
   })
   ;
@@ -34,9 +34,8 @@ describe('Authenticatable', function () {
         , response = {}
         ;
 
-      // TODO: Find how to check the auth information. It doesn't get exposed to reqHeaders for
-      // some reason
       mock.post('/tokens')
+        .matchHeader('authorization', 'Basic c3RhbmxleTpyb2Nrcw==')
         .reply(201, response);
 
       var result = api.authenticate(username, password);

@@ -50,8 +50,8 @@ describe('Pack File', function () {
 
   describe('#get()', function () {
     before(function () {
-      auth.then(function () {
-        st2client.actions.create(ACTION1);
+      return auth.then(function () {
+        return st2client.actions.create(ACTION1);
       });
     });
 

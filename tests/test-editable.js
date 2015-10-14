@@ -17,7 +17,7 @@ var all = rsvp.all
   , Editable = require('../lib/mixins/editable')
   , mock = nock('http://localhost', {
     reqheaders: {
-      'content-type': 'application/json'
+      'content-type': 'application/json;charset=utf-8'
     }
   })
   ;

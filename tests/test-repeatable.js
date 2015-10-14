@@ -17,7 +17,7 @@ var all = rsvp.all
   , Writable = require('../lib/mixins/repeatable')
   , mock = nock('http://localhost', {
     reqheaders: {
-      'content-type': 'application/json'
+      'content-type': 'application/json;charset=utf-8'
     }
   })
   ;
