@@ -1,6 +1,6 @@
 'use strict';
 
-var _ = require('lodash')
+var assign = Object.assign || require('object.assign')
   , url = require('url')
   , endpoint = require('./lib/endpoint')
   , Readable = require('./lib/mixins/readable')
@@ -18,9 +18,11 @@ var _ = require('lodash')
   ;
 
 module.exports = function (opts) {
-  opts = _.defaults({}, opts, {
-    token: {}
-  });
+  opts = assign({}, opts);
+
+  if (!opts.token) {
+    opts.token = {};
+  }
 
   var Opts = {
     protocol: {
@@ -83,7 +85,7 @@ module.exports = function (opts) {
 
     token: opts.token,
     setToken: function (token) {
-      _.assign(opts.token, token);
+      assign(opts.token, token);
       return this;
     },
     authenticate: function (user, password) {

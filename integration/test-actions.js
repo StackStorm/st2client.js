@@ -1,7 +1,7 @@
 /*global describe, it*/
 'use strict';
 
-var _ = require('lodash')
+var assign = Object.assign || require('object.assign')
   , chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
   , config = require('./config.js')
@@ -73,8 +73,8 @@ describe('Actions', function () {
 
       var result = auth.then(function () {
         return st2client.actions.list({
-          limit: _.clone(LIMIT),
-          offset: _.clone(OFFSET)
+          limit: LIMIT,
+          offset: OFFSET
         });
       });
 
@@ -134,7 +134,7 @@ describe('Actions', function () {
 
     it('should return a promise of edited action', function () {
       var resultEdit = action.then(function (existing) {
-        var changed = _.assign({}, existing, { description: 'some' });
+        var changed = assign({}, existing, { description: 'some' });
         return st2client.actions.edit(changed);
       });
       var resultGet = resultEdit.then(function (changed) {
