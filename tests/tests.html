@@ -14,9 +14,14 @@
     <script src="../node_modules/mocha/mocha.js"></script>
     <script>
       'use strict';
-      mocha.setup('bdd')
-      mocha.slow(500)
-      mocha.timeout(3000)
+      window.mocha.setup('bdd');
+      window.mocha.slow(500);
+      window.mocha.timeout(3000);
+    </script>
+
+    <script src="../node_modules/rsvp/dist/rsvp.js"></script>
+    <script>
+      window.Promise = window.RSVP.Promise;
     </script>
 
     <!-- load test suite -->
@@ -25,9 +30,9 @@
     <!-- kick of tests -->
     <script>
       if (window.mochaPhantomJS) {
-        window.mochaPhantomJS.run()
+        window.mochaPhantomJS.run();
       } else {
-        mocha.run()
+        window.mocha.run();
       }
     </script>
   </body>
