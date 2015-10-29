@@ -30,7 +30,7 @@ In both cases, `st2client` is a factory that takes `config` object as an argumen
 
 ## Documentation
 
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/StackStorm/st2?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![IRC](https://img.shields.io/irc/%23stackstorm.png)](http://webchat.freenode.net/?channels=stackstorm)
 
 Please refer to [StackStorm Docs](http://docs.stackstorm.com).
 
@@ -44,7 +44,7 @@ To build it manually, clone the project, install dependencies and then run `gulp
 
 You can also launch gulp in a watch state so it would lint and recompile browserify version every time it will detect the change.
 
-Integration tests require `st2` to be present. To set up dev environment and run StackStorm from sources, follow [these instructions](docs/source/install/sources.rst).
+Integration tests require `st2` to be present. To set up dev environment and run StackStorm, follow [these instructions](http://docs.stackstorm.com/install/index.html).
 
 ### Running Unit Tests
 
@@ -64,8 +64,8 @@ For the integration tests to work, all the StackStorm services including
 authentication service need to be running and accessible to the client.
 
 The client assume you are using Vagrant setup so it will try to connect to
-auth service running on ``172.168.50.50`` using username ``test`` and password
-``test``.
+auth service running on ``172.168.60.10`` using username ``testu`` and password
+``testp``.
 
 Username and password used for authentication can be configured in
 ``integration/config.js``.
