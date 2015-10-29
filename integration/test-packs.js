@@ -1,19 +1,14 @@
 /*global describe, it*/
 'use strict';
 
-var _ = require('lodash')
-  , assign = Object.assign || require('object.assign')
-  , chai = require('chai')
+var chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
-  , rsvp = require('rsvp')
   , config = require('./config.js')
   ;
 
 chai.use(chaiAsPromised);
 
-var all = rsvp.all
-  , expect = chai.expect
-  , Promise = rsvp.Promise
+var expect = chai.expect
   , st2client = require('../index')(config)
   ;
 
@@ -32,7 +27,7 @@ describe('Packs', function () {
         return st2client.packs.get('core');
       });
 
-      return all([
+      return Promise.all([
         expect(result).to.be.fulfilled,
         expect(result).to.eventually.be.an('object'),
         expect(result).to.eventually.have.property('name', 'core')

@@ -4,15 +4,12 @@
 var _ = require('lodash')
   , chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
-  , rsvp = require('rsvp')
   , config = require('./config.js')
   ;
 
 chai.use(chaiAsPromised);
 
-var all = rsvp.all
-  , expect = chai.expect
-  , Promise = rsvp.Promise
+var expect = chai.expect
   , st2client = require('../index')(config)
   ;
 
@@ -33,7 +30,7 @@ describe('Executions', function () {
         return st2client.executions.list();
       });
 
-      return all([
+      return Promise.all([
         expect(result).to.be.fulfilled,
         expect(result).to.eventually.be.an('array'),
         // 'length.of.at.least' is broken when used along with 'evantually'
@@ -65,7 +62,7 @@ describe('Executions', function () {
         });
       });
 
-      return all([
+      return Promise.all([
         expect(result).to.be.fulfilled,
         expect(result).to.eventually.be.an('array'),
         result.then(function (records) {
@@ -86,7 +83,7 @@ describe('Executions', function () {
         });
       });
 
-      return all([
+      return Promise.all([
         expect(result).to.be.fulfilled,
         expect(result).to.eventually.be.an('array'),
         result.then(function (records) {
@@ -107,7 +104,7 @@ describe('Executions', function () {
         });
       });
 
-      return all([
+      return Promise.all([
         expect(result).to.be.fulfilled,
         expect(result).to.eventually.be.an('object')
         // TODO: consider checking against jsonschema

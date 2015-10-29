@@ -1,17 +1,14 @@
 /*global describe, it*/
 'use strict';
 
-var _ = require('lodash')
-  , chai = require('chai')
+var chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
-  , rsvp = require('rsvp')
   , config = require('./config.js')
   ;
 
 chai.use(chaiAsPromised);
 
-var all = rsvp.all
-  , expect = chai.expect
+var expect = chai.expect
   , st2client = require('../index')(config)
   ;
 
@@ -25,7 +22,7 @@ prescribe('Auth', function () {
     it('should return a promise of a token', function () {
       var result = st2client.authenticate(config.credentials.user, config.credentials.password);
 
-      return all([
+      return Promise.all([
         expect(result).to.be.fulfilled,
         expect(result).to.eventually.be.an('object'),
         result.then(function (token) {
@@ -40,7 +37,7 @@ prescribe('Auth', function () {
     it('should reject the promise in case of wrong password', function () {
       var result = st2client.auth.authenticate(config.credentials.user, 'wrongpassword');
 
-      return all([
+      return Promise.all([
         expect(result).to.be.rejected,
         result.catch(function (err) {
           expect(err).to.have.property('name', 'APIError');
@@ -55,7 +52,7 @@ prescribe('Auth', function () {
       var username = 'wronguser' + Math.floor(Math.random() * 10000);
       var result = st2client.auth.authenticate(username, 'wrongpassword');
 
-      return all([
+      return Promise.all([
         expect(result).to.be.rejected,
         result.catch(function (err) {
           expect(err).to.have.property('name', 'APIError');

@@ -5,15 +5,13 @@ var chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
   , endpoint = require('../lib/endpoint')
   , nock = require('nock')
-  , rsvp = require('rsvp')
   , Opts = require('./opts')
   ;
 
 chai.use(chaiAsPromised);
 nock.disableNetConnect();
 
-var all = rsvp.all
-  , expect = chai.expect
+var expect = chai.expect
   , Writable = require('../lib/mixins/repeatable')
   , mock = nock('http://localhost', {
     reqheaders: {
@@ -39,7 +37,7 @@ describe('Repeatable', function () {
 
       var result = api.repeat(id, request);
 
-      return all([
+      return Promise.all([
         expect(result).to.eventually.be.an('object'),
         expect(result).to.eventually.be.deep.equal(response)
       ]);
@@ -67,7 +65,7 @@ describe('Repeatable', function () {
 
       var result = api.repeat('DEADBEEF', {});
 
-      return all([
+      return Promise.all([
         expect(result).to.be.rejected,
         result.catch(function (err) {
           expect(err).to.have.property('name', 'APIError');

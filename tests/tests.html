@@ -19,10 +19,7 @@
       window.mocha.timeout(3000);
     </script>
 
-    <script src="../node_modules/rsvp/dist/rsvp.js"></script>
-    <script>
-      window.Promise = window.RSVP.Promise;
-    </script>
+    <script src="../node_modules/promise-polyfill/Promise.js"></script>
 
     <!-- load test suite -->
     <script src="../dist/tests.js"></script>

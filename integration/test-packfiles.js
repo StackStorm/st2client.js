@@ -4,15 +4,12 @@
 var _ = require('lodash')
   , chai = require('chai')
   , chaiAsPromised = require("chai-as-promised")
-  , rsvp = require('rsvp')
   , config = require('./config.js')
   ;
 
 chai.use(chaiAsPromised);
 
-var all = rsvp.all
-  , expect = chai.expect
-  , Promise = rsvp.Promise
+var expect = chai.expect
   , st2client = require('../index')(config)
   ;
 
@@ -31,7 +28,7 @@ describe('Pack Files', function () {
         return st2client.packFiles.get('core');
       });
 
-      return all([
+      return Promise.all([
         expect(result).to.be.fulfilled,
         expect(result).to.eventually.be.an('array'),
         result.then(function (files) {
