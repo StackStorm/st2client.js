@@ -18,6 +18,12 @@ module.exports = {
   cacheStream: {
     value: true
   },
+  token: {
+    value: {}
+  },
+  key: {
+    value: {}
+  },
 
   url: {
     get: function () {
