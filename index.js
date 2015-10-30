@@ -65,7 +65,7 @@ module.exports = function (opts) {
       get: function () {
         return url.format({
           protocol: this.protocol,
-          hostname: this.host,
+          hostname: this.host || 'localhost',
           port: this.port,
           pathname: ['/', this.api_version, this.path].join('')
         });
