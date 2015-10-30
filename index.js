@@ -79,8 +79,10 @@ module.exports = function (opts) {
     auth: endpoint('/tokens', Opts, Authenticatable),
 
     actions: endpoint('/actions', Opts, Readable, Enumerable, Writable, Editable, Deletable),
+    actionAlias: endpoint('/actionalias', Opts, Readable, Enumerable, Writable, Editable, Deletable),
     actionOverview: endpoint('/actions/views/overview', Opts, Readable, Enumerable),
     actionEntryPoint: endpoint('/actions/views/entry_point', Opts, Readable),
+    aliasExecution: endpoint('/aliasexecution', Opts, Writable),
     executions: endpoint('/executions', Opts, Readable, Writable, Paginatable, Watchable,
       Attributable, Repeatable),
     executionsFilters: endpoint('/executions/views/filters', Opts, Enumerable),
