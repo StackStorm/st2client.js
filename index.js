@@ -24,6 +24,10 @@ module.exports = function (opts) {
     opts.token = {};
   }
 
+  if (!opts.key) {
+    opts.key = {};
+  }
+
   var Opts = {
     protocol: {
       value: opts.protocol
@@ -43,6 +47,11 @@ module.exports = function (opts) {
     token: {
       get: function () {
         return opts.token;
+      }
+    },
+    key: {
+      get: function () {
+        return opts.key;
       }
     },
     rejectUnauthorized: {
@@ -86,6 +95,10 @@ module.exports = function (opts) {
     token: opts.token,
     setToken: function (token) {
       assign(opts.token, token);
+      return this;
+    },
+    setKey: function (key) {
+      assign(opts.key, key);
       return this;
     },
     authenticate: function (user, password) {
