@@ -18,7 +18,7 @@ var expect = chai.expect
 
 describe('Deletable', function () {
 
-  var api = endpoint('/test', Opts, Deletable);
+  var api = endpoint('/test', Opts, Deletable).value;
 
   describe('#delete()', function () {
 

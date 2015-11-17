@@ -1,6 +1,7 @@
 'use strict';
 
 var assign = Object.assign || require('object.assign')
+  , EventEmitter = require('events')
   , url = require('url')
   , endpoint = require('./lib/endpoint')
   , Readable = require('./lib/mixins/readable')
@@ -73,7 +74,7 @@ module.exports = function (opts) {
     }
   };
 
-  return {
+  return Object.create(EventEmitter.prototype, {
     index: endpoint('/', Opts),
 
     auth: endpoint('/tokens', Opts, Authenticatable),
@@ -94,20 +95,31 @@ module.exports = function (opts) {
     stream: endpoint('/stream', Opts, Streamable),
     triggerTypes: endpoint('/triggertypes', Opts, Readable, Enumerable),
 
-    token: opts.token,
-    setToken: function (token) {
-      assign(opts.token, token);
-      return this;
+    token: {
+      value: opts.token
     },
-    setKey: function (key) {
-      assign(opts.key, key);
-      return this;
+    setToken: {
+      value: function (token) {
+        assign(opts.token, token);
+        return this;
+      }
     },
-    authenticate: function (user, password) {
-      return this.auth.authenticate(user, password).then(function (token) {
-        this.setToken(token);
-        return token;
-      }.bind(this));
+    setKey: {
+      value: function (key) {
+        assign(opts.key, key);
+        return this;
+      }
+    },
+    authenticate: {
+      value: function (user, password) {
+        return this.auth.authenticate(user, password).then(function (token) {
+          this.setToken(token);
+          setTimeout(function () {
+            this.emit('expiry', token);
+          }.bind(this), new Date(token.expiry) - new Date());
+          return token;
+        }.bind(this));
+      }
     }
-  };
+  });
 };

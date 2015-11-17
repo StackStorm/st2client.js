@@ -15,7 +15,7 @@ var expect = chai.expect
 
 describe('Routable', function () {
 
-  var api = endpoint('/test', Opts, Routable);
+  var api = endpoint('/test', Opts, Routable).value;
 
   describe('#route()', function () {
 

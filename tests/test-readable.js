@@ -18,7 +18,7 @@ var expect = chai.expect
 
 describe('Readable', function () {
 
-  var api = endpoint('/test', Opts, Readable);
+  var api = endpoint('/test', Opts, Readable).value;
 
   describe('#get()', function () {
 

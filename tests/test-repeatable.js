@@ -22,7 +22,7 @@ var expect = chai.expect
 
 describe('Repeatable', function () {
 
-  var api = endpoint('/test', Opts, Writable);
+  var api = endpoint('/test', Opts, Writable).value;
 
   describe('#repeat()', function () {
 
