@@ -19,7 +19,7 @@ var expect = chai.expect
 
 describe('Enumerable', function () {
 
-  var api = endpoint('/test', Opts, Enumerable);
+  var api = endpoint('/test', Opts, Enumerable).value;
 
   describe('#listAll()', function () {
 

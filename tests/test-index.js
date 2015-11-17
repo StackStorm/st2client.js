@@ -25,6 +25,12 @@ describe('Index', function () {
     var index = Index();
 
     expect(index).to.be.an('object');
+
+    expect(index).to.have.property('on').that.is.a('function');
+    expect(index).to.have.property('emit').that.is.a('function');
+    expect(index).to.have.property('removeListener').that.is.a('function');
+    expect(index).to.have.property('removeAllListeners').that.is.a('function');
+
     expect(index).to.have.property('actions');
     expect(index).to.have.property('actionOverview');
     expect(index).to.have.property('actionEntryPoint');
@@ -79,6 +85,8 @@ describe('Index', function () {
 
     it('should update the token on the endpoints', function () {
       var token = { token: 'DEADBEEF' };
+
+      Object.defineProperty(index, 'auth', { writable: true });
 
       index.auth = {
         authenticate: function () {

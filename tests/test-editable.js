@@ -22,7 +22,7 @@ var expect = chai.expect
 
 describe('Editable', function () {
 
-  var api = endpoint('/test', Opts, Editable);
+  var api = endpoint('/test', Opts, Editable).value;
 
   describe('#edit()', function () {
 

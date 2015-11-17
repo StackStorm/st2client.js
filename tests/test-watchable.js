@@ -18,7 +18,7 @@ var expect = chai.expect
 
 describe('Watchable', function () {
 
-  var api = endpoint('/test', Opts, Watchable);
+  var api = endpoint('/test', Opts, Watchable).value;
 
   describe('#_watchMethod()', function () {
 

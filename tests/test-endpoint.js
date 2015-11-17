@@ -30,10 +30,10 @@ describe('Endpoint factory', function () {
     var obj = endpoint('url', mixin1, mixin2);
 
     expect(obj).to.be.an('object');
-    expect(obj).to.have.property('a', 'b');
-    expect(obj).to.have.property('b', 'b');
-    expect(obj).to.have.property('c', 'd');
-    expect(obj).to.have.property('path', 'url');
+    expect(obj.value).to.have.property('a', 'b');
+    expect(obj.value).to.have.property('b', 'b');
+    expect(obj.value).to.have.property('c', 'd');
+    expect(obj.value).to.have.property('path', 'url');
   });
 
 });

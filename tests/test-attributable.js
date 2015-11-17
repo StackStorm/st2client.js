@@ -18,7 +18,7 @@ var expect = chai.expect
 
 describe('Attributable', function () {
 
-  var api = endpoint('/test', Opts, Attributable);
+  var api = endpoint('/test', Opts, Attributable).value;
 
   describe('#attribute()', function () {
 

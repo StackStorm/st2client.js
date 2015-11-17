@@ -34,7 +34,7 @@ var expect = chai.expect
 
 describe('Streamable', function () {
 
-  var api = endpoint('/stream', Opts, Streamable);
+  var api = endpoint('/stream', Opts, Streamable).value;
 
   describe('#listen()', function () {
 
@@ -85,7 +85,7 @@ describe('Streamable', function () {
         cacheStream: {
           value: false
         }
-      }, Streamable);
+      }, Streamable).value;
 
       mock.get('/v1/stream')
         .reply(200);

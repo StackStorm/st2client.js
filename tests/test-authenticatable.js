@@ -22,7 +22,7 @@ var expect = chai.expect
 
 describe('Authenticatable', function () {
 
-  var api = endpoint('/tokens', Opts, Authenticatable);
+  var api = endpoint('/tokens', Opts, Authenticatable).value;
 
   describe('#create()', function () {
 
@@ -101,7 +101,7 @@ describe('Authenticatable', function () {
             port: '999'
           }
         }
-      }, Authenticatable);
+      }, Authenticatable).value;
 
       nock('http://custom:999').post('/tokens')
         .reply(201);

@@ -22,7 +22,7 @@ describe('Paginatable', function () {
   var api;
 
   beforeEach(function () {
-    api = endpoint('/test', Opts, Paginatable);
+    api = endpoint('/test', Opts, Paginatable).value;
   });
 
   describe('#listPage()', function () {
