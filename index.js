@@ -39,6 +39,9 @@ module.exports = function (opts) {
     port: {
       value: opts.port
     },
+    prefix: {
+      value: opts.prefix
+    },
     api_version: {
       value: 'v' + (opts.api_version || 1)
     },
@@ -64,11 +67,24 @@ module.exports = function (opts) {
 
     url: {
       get: function () {
+        var prefix = '';
+        if (this.prefix) {
+          prefix = this.prefix;
+          if (this.prefix[0] !== '/') {
+            prefix = '/' + prefix;
+          }
+          if (this.prefix[this.prefix.length - 1] === '/') {
+            prefix = prefix.slice(0, -1);
+          }
+        }
+        if (this.api_version) {
+          prefix += '/' + this.api_version;
+        }
         return url.format({
           protocol: this.protocol,
           hostname: this.host || 'localhost',
           port: this.port,
-          pathname: ['/', this.api_version, this.path].join('')
+          pathname: prefix + this.path
         });
       }
     }
@@ -114,11 +130,19 @@ module.exports = function (opts) {
       value: function (user, password) {
         return this.auth.authenticate(user, password).then(function (token) {
           this.setToken(token);
-          setTimeout(function () {
+          if (this._expiryTimeout) {
+            clearTimeout(this._expiryTimeout);
+          }
+          this._expiryTimeout = setTimeout(function () {
             this.emit('expiry', token);
           }.bind(this), new Date(token.expiry) - new Date());
           return token;
         }.bind(this));
+      }
+    },
+    close: {
+      value: function () {
+        clearTimeout(this._expiryTimeout);
       }
     }
   });
