@@ -110,4 +110,8 @@ describe('Executions', function () {
       ]);
     });
   });
+
+  after(function () {
+    st2client.close();
+  });
 });

@@ -34,4 +34,8 @@ describe('Packs', function () {
       ]);
     });
   });
+
+  after(function () {
+    st2client.close();
+  });
 });

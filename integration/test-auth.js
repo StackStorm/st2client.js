@@ -65,4 +65,7 @@ prescribe('Auth', function () {
 
   });
 
+  after(function () {
+    st2client.close();
+  });
 });
