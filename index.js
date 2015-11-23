@@ -18,6 +18,11 @@ var assign = Object.assign || require('object.assign')
   , Routable = require('./lib/mixins/routable')
   ;
 
+var protoPorts = {
+  http: 80,
+  https: 443
+};
+
 module.exports = function (opts) {
   opts = assign({}, opts);
 
@@ -27,6 +32,30 @@ module.exports = function (opts) {
 
   if (!opts.key) {
     opts.key = {};
+  }
+
+  if (opts.api && typeof opts.api === 'string') {
+    var pAPI = url.parse(opts.api);
+
+    pAPI.protocol = pAPI.protocol && pAPI.protocol.slice(0, -1);
+
+    opts.protocol = pAPI.protocol;
+    opts.host = pAPI.hostname;
+    opts.port = pAPI.port || protoPorts[pAPI.protocol || 'http'];
+    opts.prefix = pAPI.path;
+  }
+
+  if (opts.auth && typeof opts.auth === 'string') {
+    var pAuth = url.parse(opts.auth);
+
+    pAuth.protocol = pAuth.protocol && pAuth.protocol.slice(0, -1);
+
+    opts.auth = {
+      protocol: pAuth.protocol,
+      host: pAuth.hostname,
+      port: pAuth.port || protoPorts[pAuth.protocol || 'http'],
+      prefix: pAuth.path
+    };
   }
 
   var Opts = {

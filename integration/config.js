@@ -1,12 +1,11 @@
 'use strict';
 
 module.exports = {
-  protocol: 'http',
-  host: '172.168.60.10',
-  port: 9101,
+  api: 'https://192.168.10.40/api',
+  auth: 'https://192.168.10.40/auth',
   rejectUnauthorized: false,
   credentials: {
-    user: 'testu',
-    password: 'testp'
+    user: 'admin',
+    password: 'passw0rd'
   }
 };
