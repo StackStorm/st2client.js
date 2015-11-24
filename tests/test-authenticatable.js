@@ -94,6 +94,9 @@ describe('Authenticatable', function () {
 
     it('should connect to custom url if auth object provided', function () {
       var api = endpoint('/tokens', Opts, {
+        protocol: {
+          value: 'https'
+        },
         auth: {
           value: {
             protocol: 'http',
@@ -104,6 +107,21 @@ describe('Authenticatable', function () {
       }, Authenticatable).value;
 
       nock('http://custom:999').post('/tokens')
+        .reply(201);
+
+      var result = api.authenticate('stanley', 'rocks');
+
+      return expect(result).to.be.fulfilled;
+    });
+
+    it('should use API protocol when it is not specifically defined for auth', function () {
+      var api = endpoint('/tokens', Opts, {
+        protocol: {
+          value: 'https'
+        }
+      }, Authenticatable).value;
+
+      nock('https://localhost:9100').post('/tokens')
         .reply(201);
 
       var result = api.authenticate('stanley', 'rocks');
