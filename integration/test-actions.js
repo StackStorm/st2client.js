@@ -160,8 +160,8 @@ describe('Actions', function () {
 
   describe('#delete()', function () {
     before(function () {
-      auth.then(function () {
-        st2client.actions.create(ACTION1);
+      return auth.then(function () {
+        return st2client.actions.create(ACTION1);
       });
     });
 
@@ -172,8 +172,12 @@ describe('Actions', function () {
 
       return Promise.all([
         expect(result).to.be.fulfilled,
-        expect(result).to.eventually.be.equal('null')
+        expect(result).to.eventually.be.equal('')
       ]);
     });
+  });
+
+  after(function () {
+    st2client.close();
   });
 });

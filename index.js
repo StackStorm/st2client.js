@@ -18,6 +18,11 @@ var assign = Object.assign || require('object.assign')
   , Routable = require('./lib/mixins/routable')
   ;
 
+var protoPorts = {
+  http: 80,
+  https: 443
+};
+
 module.exports = function (opts) {
   opts = assign({}, opts);
 
@@ -29,6 +34,30 @@ module.exports = function (opts) {
     opts.key = {};
   }
 
+  if (opts.api && typeof opts.api === 'string') {
+    var pAPI = url.parse(opts.api);
+
+    pAPI.protocol = pAPI.protocol && pAPI.protocol.slice(0, -1);
+
+    opts.protocol = pAPI.protocol;
+    opts.host = pAPI.hostname;
+    opts.port = pAPI.port || protoPorts[pAPI.protocol || 'http'];
+    opts.prefix = pAPI.path;
+  }
+
+  if (opts.auth && typeof opts.auth === 'string') {
+    var pAuth = url.parse(opts.auth);
+
+    pAuth.protocol = pAuth.protocol && pAuth.protocol.slice(0, -1);
+
+    opts.auth = {
+      protocol: pAuth.protocol,
+      host: pAuth.hostname,
+      port: pAuth.port || protoPorts[pAuth.protocol || 'http'],
+      prefix: pAuth.path
+    };
+  }
+
   var Opts = {
     protocol: {
       value: opts.protocol
@@ -38,6 +67,9 @@ module.exports = function (opts) {
     },
     port: {
       value: opts.port
+    },
+    prefix: {
+      value: opts.prefix
     },
     api_version: {
       value: 'v' + (opts.api_version || 1)
@@ -64,11 +96,24 @@ module.exports = function (opts) {
 
     url: {
       get: function () {
+        var prefix = '';
+        if (this.prefix) {
+          prefix = this.prefix;
+          if (this.prefix[0] !== '/') {
+            prefix = '/' + prefix;
+          }
+          if (this.prefix[this.prefix.length - 1] === '/') {
+            prefix = prefix.slice(0, -1);
+          }
+        }
+        if (this.api_version) {
+          prefix += '/' + this.api_version;
+        }
         return url.format({
           protocol: this.protocol,
           hostname: this.host || 'localhost',
           port: this.port,
-          pathname: ['/', this.api_version, this.path].join('')
+          pathname: prefix + this.path
         });
       }
     }
@@ -114,11 +159,19 @@ module.exports = function (opts) {
       value: function (user, password) {
         return this.auth.authenticate(user, password).then(function (token) {
           this.setToken(token);
-          setTimeout(function () {
+          if (this._expiryTimeout) {
+            clearTimeout(this._expiryTimeout);
+          }
+          this._expiryTimeout = setTimeout(function () {
             this.emit('expiry', token);
           }.bind(this), new Date(token.expiry) - new Date());
           return token;
         }.bind(this));
+      }
+    },
+    close: {
+      value: function () {
+        clearTimeout(this._expiryTimeout);
       }
     }
   });

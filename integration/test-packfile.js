@@ -70,4 +70,8 @@ describe('Pack File', function () {
       });
     });
   });
+
+  after(function () {
+    st2client.close();
+  });
 });

@@ -69,6 +69,90 @@ describe('Index', function () {
     expect(index.token).to.be.an('object').and.empty;
   });
 
+  it('should parse API and Auth url when defined as string', function () {
+    var Index = require('../index');
+
+    var client = Index({
+      api: 'https://some:9199/query/mo',
+      auth: '/auth'
+    });
+
+    expect(client.index.url).to.equal('https://some:9199/query/mo/v1/');
+    expect(client.index.auth).to.deep.equal({
+      protocol: null,
+      host: null,
+      port: 80,
+      prefix: '/auth'
+    });
+  });
+
+  describe('#url', function () {
+
+    it('should properly handle API version', function () {
+      var Index = require('../index');
+
+      var index = Index();
+
+      expect(index.index.url).to.deep.equal('//localhost/v1/');
+
+      index = Index({
+        api_version: 2
+      });
+
+      expect(index.index.url).to.deep.equal('//localhost/v2/');
+
+      index = Index({
+        api_version: '2'
+      });
+
+      expect(index.index.url).to.deep.equal('//localhost/v2/');
+    });
+
+    it('should properly handle prefix', function () {
+      var Index = require('../index');
+
+      var index = Index();
+
+      expect(index.index.url).to.deep.equal('//localhost/v1/');
+
+      index = Index({
+        prefix: 'auth'
+      });
+
+      expect(index.index.url).to.deep.equal('//localhost/auth/v1/');
+
+      index = Index({
+        prefix: '/auth'
+      });
+
+      expect(index.index.url).to.deep.equal('//localhost/auth/v1/');
+
+      index = Index({
+        prefix: 'auth/'
+      });
+
+      expect(index.index.url).to.deep.equal('//localhost/auth/v1/');
+
+      index = Index({
+        prefix: '/auth/'
+      });
+
+      expect(index.index.url).to.deep.equal('//localhost/auth/v1/');
+    });
+
+    it('should properly handle both version and prefix at the same time', function () {
+      var Index = require('../index');
+
+      index = Index({
+        prefix: '/api',
+        api_version: 5
+      });
+
+      expect(index.index.url).to.deep.equal('//localhost/api/v5/');
+    });
+
+  });
+
   describe('#setToken()', function () {
 
     it('should update the token on the endpoints', function () {

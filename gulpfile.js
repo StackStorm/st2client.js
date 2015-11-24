@@ -25,7 +25,7 @@ var builtins = assign({}, require('browserify/lib/builtins'), {
 });
 
 // Timeout for each integration test (in ms)
-var INTEGRATION_TEST_TIMEOUT = 4000;
+var INTEGRATION_TEST_TIMEOUT = 10000;
 
 gulp.task('clean', function(cb) {
   del(['dist'], cb);
