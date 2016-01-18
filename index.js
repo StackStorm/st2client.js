@@ -130,7 +130,7 @@ module.exports = function (opts) {
     actionEntryPoint: endpoint('/actions/views/entry_point', Opts, Readable),
     aliasExecution: endpoint('/aliasexecution', Opts, Writable),
     executions: endpoint('/executions', Opts, Readable, Writable, Paginatable, Watchable,
-      Attributable, Repeatable),
+      Attributable, Repeatable, Deletable),
     executionsFilters: endpoint('/executions/views/filters', Opts, Enumerable),
     packs: endpoint('/packs', Opts, Readable, Enumerable),
     packFiles: endpoint('/packs/views/files', Opts, Readable),

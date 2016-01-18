@@ -44,6 +44,28 @@ describe('Deletable', function () {
       expect(fn).to.throw('is not a valid id');
     });
 
+    it('should resolve the promise in case of 200 and 204 status codes', function () {
+      var response = {
+        status: 'cancelled'
+      };
+
+      mock.delete('/v1/test/1')
+        .reply(200, response);
+
+      var result200 = api.delete(1);
+
+      mock.delete('/v1/test/1')
+        .reply(204);
+
+      var result204 = api.delete(1);
+
+      return Promise.all([
+        expect(result204).to.be.resolved,
+        expect(result200).to.be.resolved,
+        expect(result200).to.eventually.be.deep.equal(response)
+      ]);
+    });
+
     it('should reject the promise if server returns 4xx or 5xx status code', function () {
       var response = {
         faultstring: 'some'
