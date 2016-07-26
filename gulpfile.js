@@ -70,14 +70,14 @@ gulp.task('browserify-tests', function() {
 gulp.task('test', function () {
   return gulp.src('tests/**/*.js', {read: false})
     .pipe(mocha({
-      reporter: process.env.reporter || 'base'
+      reporter: process.env.reporter || 'spec'
     }));
 });
 
 gulp.task('test-browser', ['browserify', 'browserify-tests'], function () {
   return gulp.src('tests/tests.html')
     .pipe(mochaPhantomJS({
-      reporter: process.env.reporter || 'base',
+      reporter: process.env.reporter || 'spec',
       phantomjs: {
         useColors: true
       }
