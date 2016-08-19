@@ -13,7 +13,7 @@ nock.disableNetConnect();
 
 var expect = chai.expect
   , Authenticatable = require('../lib/mixins/authenticatable')
-  , mock = nock('http://localhost:9100', {
+  , mock = nock('http://localhost', {
     reqheaders: {
       'content-type': 'application/x-www-form-urlencoded'
     }
@@ -121,7 +121,7 @@ describe('Authenticatable', function () {
         }
       }, Authenticatable).value;
 
-      nock('https://localhost:9100').post('/tokens')
+      nock('https://localhost').post('/tokens')
         .reply(201);
 
       var result = api.authenticate('stanley', 'rocks');
