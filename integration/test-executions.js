@@ -14,6 +14,13 @@ var expect = chai.expect
 
 var MINIMUM_ENTITIES = 3;
 
+var EXECUTION1 = {
+  action: 'core.local',
+  parameters: {
+    cmd: 'date'
+  }
+}
+
 describe('Executions', function () {
   var auth = (function () {
     if (config.credentials) {
@@ -22,6 +29,37 @@ describe('Executions', function () {
       return new Promise(function (resolve) { resolve(st2client); });
     }
   })();
+
+  describe('#post()', function () {
+    it('should return result for a single execution', function () {
+      var result = auth.then(function () {
+        return st2client.executions.create(EXECUTION1);
+      });
+
+      return Promise.all([
+        expect(result).to.be.fulfilled,
+        expect(result).to.eventually.be.an('object')
+        // TODO: consider checking against jsonschema
+      ]);
+    });
+
+    it('should return error for nonexistent action', function () {
+      var result = auth.then(function () {
+        return st2client.executions.create({
+          action: 'mock.foobar'
+        });
+      });
+
+      return Promise.all([
+        expect(result).to.be.rejected,
+        result.catch(function (err) {
+          expect(err).to.have.property('name', 'APIError');
+          expect(err).to.have.property('status', 400);
+          expect(err).to.have.property('message');
+        })
+      ]);
+    });
+  });
 
   describe('#list()', function () {
     it('should return a promise of a list of history records', function () {
@@ -94,7 +132,7 @@ describe('Executions', function () {
   });
 
   describe('#get()', function () {
-    it('should return a promise of a single action', function () {
+    it('should return a promise of a single execution', function () {
       var result = auth.then(function () {
         return st2client.executions.list({
           limit: 1
@@ -107,6 +145,21 @@ describe('Executions', function () {
         expect(result).to.be.fulfilled,
         expect(result).to.eventually.be.an('object')
         // TODO: consider checking against jsonschema
+      ]);
+    });
+
+    it('should return error for nonexistent execution', function () {
+      var result = auth.then(function () {
+        return st2client.executions.get('foobar');
+      });
+
+      return Promise.all([
+        expect(result).to.be.rejected,
+        result.catch(function (err) {
+          expect(err).to.have.property('name', 'APIError');
+          expect(err).to.have.property('status', 404);
+          expect(err).to.have.property('message');
+        })
       ]);
     });
   });
