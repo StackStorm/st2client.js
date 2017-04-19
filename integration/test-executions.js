@@ -12,7 +12,7 @@ var expect = chai.expect
   , st2client = require('../index')(config)
   ;
 
-var MINIMUM_ENTITIES = 3;
+var MINIMUM_ENTITIES = 1;
 
 var EXECUTION1 = {
   action: 'core.local',
@@ -43,6 +43,22 @@ describe('Executions', function () {
       ]);
     });
 
+    it('should return result for a single execution for the rerun', function () {
+      var result = auth.then(function () {
+        return st2client.executions.list({
+          limit: 1
+        }).then(function (records) {
+          return st2client.executions.repeat(records[0].id, {});
+        });
+      });
+
+      return Promise.all([
+        expect(result).to.be.fulfilled,
+        expect(result).to.eventually.be.an('object')
+        // TODO: consider checking against jsonschema
+      ]);
+    });
+
     it('should return error for nonexistent action', function () {
       var result = auth.then(function () {
         return st2client.executions.create({
@@ -55,6 +71,21 @@ describe('Executions', function () {
         result.catch(function (err) {
           expect(err).to.have.property('name', 'APIError');
           expect(err).to.have.property('status', 400);
+          expect(err).to.have.property('message');
+        })
+      ]);
+    });
+
+    it('should return error for rerunning nonexistent execution', function () {
+      var result = auth.then(function () {
+        return st2client.executions.repeat('12345', {});
+      });
+
+      return Promise.all([
+        expect(result).to.be.rejected,
+        result.catch(function (err) {
+          expect(err).to.have.property('name', 'APIError');
+          expect(err).to.have.property('status', 404);
           expect(err).to.have.property('message');
         })
       ]);
