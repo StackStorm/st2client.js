@@ -101,6 +101,21 @@ describe('Actions', function () {
         // TODO: consider checking against jsonschema
       ]);
     });
+
+    it('should return error for nonexistent action', function () {
+      var result = auth.then(function () {
+        return st2client.actions.get('mock.foobar');
+      });
+
+      return Promise.all([
+        expect(result).to.be.rejected,
+        result.catch(function (err) {
+          expect(err).to.have.property('name', 'APIError');
+          expect(err).to.have.property('status', 404);
+          expect(err).to.have.property('message');
+        })
+      ]);
+    });
   });
 
   describe('#create()', function () {
@@ -151,6 +166,29 @@ describe('Actions', function () {
       ]);
     });
 
+    it('should return error for editing nonexisting action', function () {
+      var result = auth.then(function () {
+        return st2client.actions.edit({
+          id: '12345',
+          name: 'st2.dummy.action1',
+          description: 'test description',
+          enabled: true,
+          pack: 'default',
+          entry_point: '/tmp/test/action1.sh',
+          runner_type: 'local-shell-script',
+        });
+      });
+
+      return Promise.all([
+        expect(result).to.be.rejected,
+        result.catch(function (err) {
+          expect(err).to.have.property('name', 'APIError');
+          expect(err).to.have.property('status', 404);
+          expect(err).to.have.property('message');
+        })
+      ]);
+    });
+
     after(function () {
       auth.then(function () {
         st2client.actions.delete(ACTION1.pack + '.' + ACTION1.name);
@@ -174,6 +212,27 @@ describe('Actions', function () {
         expect(result).to.be.fulfilled,
         expect(result).to.eventually.be.equal('')
       ]);
+    });
+
+    it('should return error for nonexistent action', function () {
+      var result = auth.then(function () {
+        return st2client.actions.delete('mock.foobar');
+      });
+
+      return Promise.all([
+        expect(result).to.be.rejected,
+        result.catch(function (err) {
+          expect(err).to.have.property('name', 'APIError');
+          expect(err).to.have.property('status', 404);
+          expect(err).to.have.property('message');
+        })
+      ]);
+    });
+
+    after(function () {
+      auth.then(function () {
+        st2client.actions.delete(ACTION1.pack + '.' + ACTION1.name);
+      });
     });
   });
 
