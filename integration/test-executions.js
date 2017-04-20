@@ -12,7 +12,7 @@ var expect = chai.expect
   , st2client = require('../index')(config)
   ;
 
-var MINIMUM_ENTITIES = 1;
+var MINIMUM_ENTITIES = 3;
 
 var EXECUTION1 = {
   action: 'core.local',
@@ -45,9 +45,7 @@ describe('Executions', function () {
 
     it('should return result for a single execution for the rerun', function () {
       var result = auth.then(function () {
-        return st2client.executions.list({
-          limit: 1
-        }).then(function (records) {
+        return st2client.executions.list({}).then(function (records) {
           return st2client.executions.repeat(records[0].id, {});
         });
       });
@@ -93,6 +91,15 @@ describe('Executions', function () {
   });
 
   describe('#list()', function () {
+
+    before(function () {
+      return auth.then(function () {
+        for (var i = 0; i < MINIMUM_ENTITIES; i++) {
+          st2client.executions.create(EXECUTION1);
+        };
+      });
+    });
+
     it('should return a promise of a list of history records', function () {
       var result = auth.then(function () {
         return st2client.executions.list();
