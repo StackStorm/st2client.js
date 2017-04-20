@@ -129,6 +129,7 @@ module.exports = function (opts) {
     actionOverview: endpoint('/actions/views/overview', Opts, Readable, Enumerable),
     actionEntryPoint: endpoint('/actions/views/entry_point', Opts, Readable),
     aliasExecution: endpoint('/aliasexecution', Opts, Writable),
+    apikeys: endpoint('/apikeys', Opts, Readable, Enumerable, Writable, Editable, Deletable),
     executions: endpoint('/executions', Opts, Readable, Writable, Paginatable, Watchable,
       Attributable, Repeatable, Deletable),
     executionsFilters: endpoint('/executions/views/filters', Opts, Enumerable),
