@@ -43,6 +43,20 @@ describe('Executions', function () {
       ]);
     });
 
+    it('should return result for a single execution for the rerun', function () {
+      var result = auth.then(function () {
+        return st2client.executions.list({}).then(function (records) {
+          return st2client.executions.repeat(records[0].id, {});
+        });
+      });
+
+      return Promise.all([
+        expect(result).to.be.fulfilled,
+        expect(result).to.eventually.be.an('object')
+        // TODO: consider checking against jsonschema
+      ]);
+    });
+
     it('should return error for nonexistent action', function () {
       var result = auth.then(function () {
         return st2client.executions.create({
@@ -59,9 +73,33 @@ describe('Executions', function () {
         })
       ]);
     });
+
+    it('should return error for rerunning nonexistent execution', function () {
+      var result = auth.then(function () {
+        return st2client.executions.repeat('12345', {});
+      });
+
+      return Promise.all([
+        expect(result).to.be.rejected,
+        result.catch(function (err) {
+          expect(err).to.have.property('name', 'APIError');
+          expect(err).to.have.property('status', 404);
+          expect(err).to.have.property('message');
+        })
+      ]);
+    });
   });
 
   describe('#list()', function () {
+
+    before(function () {
+      return auth.then(function () {
+        for (var i = 0; i < MINIMUM_ENTITIES; i++) {
+          st2client.executions.create(EXECUTION1);
+        };
+      });
+    });
+
     it('should return a promise of a list of history records', function () {
       var result = auth.then(function () {
         return st2client.executions.list();
