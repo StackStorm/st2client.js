@@ -13,7 +13,7 @@ var expect = chai.expect
   , st2client = require('../index')(config)
   ;
 
-var MINIMUM_ENTITIES = 1;
+var MINIMUM_ENTITIES = 3;
 
 describe('API Keys', function () {
   var auth = (function () {
@@ -39,6 +39,14 @@ describe('API Keys', function () {
   });
 
   describe('#list()', function () {
+    before(function() {
+      return auth.then(function () {
+        for (var i = 0; i < MINIMUM_ENTITIES; i++) {
+          st2client.apikeys.create({});
+        };
+      });
+    });
+
     it('should return a promise of a list of API keys', function () {
       var result = auth.then(function () {
         return st2client.apikeys.list();
@@ -59,9 +67,7 @@ describe('API Keys', function () {
   describe('#get()', function () {
     it('should return a promise of a single API key', function () {
       var result = auth.then(function () {
-        return st2client.apikeys.list({
-          limit: 1
-        }).then(function (records) {
+        return st2client.apikeys.list({}).then(function (records) {
           return st2client.apikeys.get(records[0].id);
         });
       });
@@ -71,6 +77,34 @@ describe('API Keys', function () {
         expect(result).to.eventually.be.an('object'),
         expect(result).to.eventually.have.property('enabled', true)
         // TODO: consider checking against jsonschema
+      ]);
+    });
+  });
+
+  describe('#edit()', function () {
+    it('should return a promise of updated API key', function () {
+      var apikey = auth.then(function () {
+        return st2client.apikeys.list({}).then(function (records) {
+          return st2client.apikeys.get(records[0].id);
+        });
+      });
+
+      var resultEdit = apikey.then(function (existing) {
+        var changed = assign({}, existing, { enabled: false });
+        return st2client.apikeys.edit(changed);
+      });
+
+      var resultGet = resultEdit.then(function (changed) {
+        return st2client.apikeys.get(changed.id);
+      });
+
+      return Promise.all([
+        expect(resultEdit).to.be.fulfilled,
+        expect(resultEdit).to.eventually.be.an('object'),
+        expect(resultEdit).to.eventually.have.property('enabled', false),
+        expect(resultGet).to.be.fulfilled,
+        expect(resultGet).to.eventually.be.an('object'),
+        expect(resultGet).to.eventually.have.property('enabled', false),
       ]);
     });
   });
