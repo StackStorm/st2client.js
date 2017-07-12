@@ -93,6 +93,9 @@ module.exports = function (opts) {
     cacheStream: {
       value: true
     },
+    noQueryTokens: {
+      value: opts.noQueryTokens || false
+    },
 
     url: {
       get: function () {

@@ -24,6 +24,9 @@ module.exports = {
   key: {
     value: {}
   },
+  noQueryTokens: {
+    value: false
+  },
 
   url: {
     get: function () {
