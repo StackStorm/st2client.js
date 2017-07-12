@@ -9,6 +9,9 @@ module.exports = {
   auth: {
     value: {}
   },
+  stream: {
+    value: {}
+  },
   port: {
     value: undefined
   },
@@ -23,6 +26,9 @@ module.exports = {
   },
   key: {
     value: {}
+  },
+  noQueryTokens: {
+    value: false
   },
 
   url: {
