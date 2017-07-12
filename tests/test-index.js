@@ -69,12 +69,13 @@ describe('Index', function () {
     expect(index.token).to.be.an('object').and.empty;
   });
 
-  it('should parse API and Auth url when defined as string', function () {
+  it('should parse API, Auth and Stream url when defined as string', function () {
     var Index = require('../index');
 
     var client = Index({
       api: 'https://some:9199/query/mo',
-      auth: '/auth'
+      auth: '/auth',
+      stream: '/stream'
     });
 
     expect(client.index.url).to.equal('https://some:9199/query/mo/v1/');
@@ -83,6 +84,12 @@ describe('Index', function () {
       host: null,
       port: 80,
       prefix: '/auth'
+    });
+    expect(client.index.stream).to.deep.equal({
+      protocol: null,
+      host: null,
+      port: 80,
+      prefix: '/stream'
     });
   });
 
