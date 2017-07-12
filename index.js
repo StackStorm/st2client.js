@@ -58,6 +58,19 @@ module.exports = function (opts) {
     };
   }
 
+  if (opts.stream && typeof opts.stream === 'string') {
+    var pStream = url.parse(opts.stream);
+
+    pStream.protocol = pStream.protocol && pStream.protocol.slice(0, -1);
+
+    opts.stream = {
+      protocol: pStream.protocol,
+      host: pStream.hostname,
+      port: pStream.port || protoPorts[pStream.protocol || 'http'],
+      prefix: pStream.path
+    };
+  }
+
   var Opts = {
     protocol: {
       value: opts.protocol
@@ -76,6 +89,9 @@ module.exports = function (opts) {
     },
     auth: {
       value: opts.auth || {}
+    },
+    stream: {
+      value: opts.stream || {}
     },
     token: {
       get: function () {
