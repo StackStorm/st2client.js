@@ -46,6 +46,71 @@ describe('Editable', function () {
       ]);
     });
 
+    it('should allow to provide ref for endpoints separately from payload', function () {
+      var ref = 'some'
+        , request = {
+          id: '1'
+        }
+        , response = {
+          id: '1'
+        }
+        ;
+
+      mock.put('/v1/test/some', request)
+        .reply(200, response);
+
+      var result = api.edit(ref, request);
+
+      return Promise.all([
+        expect(result).to.eventually.be.an('object'),
+        expect(result).to.eventually.be.deep.equal(response)
+      ]);
+    })
+
+    it('should use ref when id is not provided as a part of the payload', function () {
+      var request = {
+          ref: '1'
+        }
+        , response = {
+          ref: '1'
+        }
+        ;
+
+      mock.put('/v1/test/1', request)
+        .reply(200, response);
+
+      var result = api.edit(request);
+
+      return Promise.all([
+        expect(result).to.eventually.be.an('object'),
+        expect(result).to.eventually.be.deep.equal(response)
+      ]);
+    });
+
+    it('should allow to provide query parameters', function () {
+      var ref = 'some'
+        , request = {
+          id: '1'
+        }
+        , response = {
+          id: '1'
+        }
+        , query = {
+          a: 'b'
+        }
+        ;
+
+      mock.put('/v1/test/some?a=b', request)
+        .reply(200, response);
+
+      var result = api.edit(ref, request, query);
+
+      return Promise.all([
+        expect(result).to.eventually.be.an('object'),
+        expect(result).to.eventually.be.deep.equal(response)
+      ]);
+    })
+
     it('should throw an error if no payload is provided', function () {
       var fn = function () {
         api.edit();
