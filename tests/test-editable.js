@@ -65,7 +65,7 @@ describe('Editable', function () {
         expect(result).to.eventually.be.an('object'),
         expect(result).to.eventually.be.deep.equal(response)
       ]);
-    })
+    });
 
     it('should use ref when id is not provided as a part of the payload', function () {
       var request = {
@@ -109,7 +109,7 @@ describe('Editable', function () {
         expect(result).to.eventually.be.an('object'),
         expect(result).to.eventually.be.deep.equal(response)
       ]);
-    })
+    });
 
     it('should throw an error if no payload is provided', function () {
       var fn = function () {
