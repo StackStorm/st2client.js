@@ -150,6 +150,8 @@ module.exports = function (opts) {
     actionEntryPoint: endpoint('/actions/views/entry_point', Opts, Readable),
     aliasExecution: endpoint('/aliasexecution', Opts, Writable),
     apikeys: endpoint('/apikeys', Opts, Readable, Enumerable, Writable, Editable, Deletable),
+    configs: endpoint('/configs', Opts, Readable, Enumerable, Editable),
+    configSchemas: endpoint('/config_schemas', Opts, Readable, Enumerable),
     executions: endpoint('/executions', Opts, Readable, Writable, Paginatable, Watchable,
       Attributable, Repeatable, Deletable),
     executionsFilters: endpoint('/executions/views/filters', Opts, Enumerable),
