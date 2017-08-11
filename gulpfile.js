@@ -97,4 +97,4 @@ gulp.task('watch', function() {
   gulp.watch(['index.js', 'tests/**/*.js'], ['lint', 'browserify']);
 });
 
-gulp.task('default', ['lint', 'browserify', 'browserify-tests', 'test', 'test-browser']);
+gulp.task('default', ['lint', 'browserify', 'browserify-tests', 'test']);
