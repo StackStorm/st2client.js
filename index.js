@@ -16,6 +16,7 @@ var assign = Object.assign || require('object.assign')
   , Attributable = require('./lib/mixins/attributable')
   , Repeatable = require('./lib/mixins/repeatable')
   , Routable = require('./lib/mixins/routable')
+  , Schedulable = require('./lib/mixins/schedulable')
   ;
 
 var protoPorts = {
@@ -149,10 +150,14 @@ module.exports = function (opts) {
     actionEntryPoint: endpoint('/actions/views/entry_point', Opts, Readable),
     aliasExecution: endpoint('/aliasexecution', Opts, Writable),
     apikeys: endpoint('/apikeys', Opts, Readable, Enumerable, Writable, Editable, Deletable),
+    configs: endpoint('/configs', Opts, Readable, Enumerable, Editable),
+    configSchemas: endpoint('/config_schemas', Opts, Readable, Enumerable),
     executions: endpoint('/executions', Opts, Readable, Writable, Paginatable, Watchable,
       Attributable, Repeatable, Deletable),
     executionsFilters: endpoint('/executions/views/filters', Opts, Enumerable),
     packs: endpoint('/packs', Opts, Readable, Enumerable),
+    packInstall: endpoint('/packs/install', Opts, Schedulable),
+    packUninstall: endpoint('/packs/uninstall', Opts, Schedulable),
     packFiles: endpoint('/packs/views/files', Opts, Readable),
     packFile: endpoint('/packs/views/file', Opts, Readable, Routable),
     rules: endpoint('/rules', Opts, Readable, Writable, Editable, Deletable, Enumerable),
