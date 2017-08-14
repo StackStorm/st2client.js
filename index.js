@@ -156,6 +156,7 @@ module.exports = function (opts) {
       Attributable, Repeatable, Deletable),
     executionsFilters: endpoint('/executions/views/filters', Opts, Enumerable),
     packs: endpoint('/packs', Opts, Readable, Enumerable),
+    packIndex: endpoint('/packs/index', Opts, Enumerable),
     packInstall: endpoint('/packs/install', Opts, Schedulable),
     packUninstall: endpoint('/packs/uninstall', Opts, Schedulable),
     packFiles: endpoint('/packs/views/files', Opts, Readable),
