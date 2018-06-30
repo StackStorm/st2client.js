@@ -1,3 +1,7 @@
+# Deprecated
+
+Please refer to https://api.stackstorm.com/ for the documentation on the latest version of API.
+
 StackStorm ST2 JavaScript bindings
 ==============================================================================
 
