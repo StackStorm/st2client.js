@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/st2client
     docker:
-      - image: circleci/node:4.2.2
+      - image: circleci/node:6
     steps:
       - checkout
       - run:
