@@ -3,12 +3,12 @@ jobs:
   build:
     working_directory: ~/st2client
     docker:
-      - image: circleci/node:6
+      - image: circleci/node:8
     steps:
       - checkout
       - run:
           name: update-npm
-          command: 'sudo npm install -g npm@5'
+          command: 'sudo npm install'
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
