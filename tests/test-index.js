@@ -100,19 +100,19 @@ describe('Index', function () {
 
       var index = Index();
 
-      expect(index.index.url).to.deep.equal('//localhost/v1/');
+      expect(index.index.url).to.deep.equal('localhost/v1/');
 
       index = Index({
         api_version: 2
       });
 
-      expect(index.index.url).to.deep.equal('//localhost/v2/');
+      expect(index.index.url).to.deep.equal('localhost/v2/');
 
       index = Index({
         api_version: '2'
       });
 
-      expect(index.index.url).to.deep.equal('//localhost/v2/');
+      expect(index.index.url).to.deep.equal('localhost/v2/');
     });
 
     it('should properly handle prefix', function () {
@@ -120,31 +120,31 @@ describe('Index', function () {
 
       var index = Index();
 
-      expect(index.index.url).to.deep.equal('//localhost/v1/');
+      expect(index.index.url).to.deep.equal('localhost/v1/');
 
       index = Index({
         prefix: 'auth'
       });
 
-      expect(index.index.url).to.deep.equal('//localhost/auth/v1/');
+      expect(index.index.url).to.deep.equal('localhost/auth/v1/');
 
       index = Index({
         prefix: '/auth'
       });
 
-      expect(index.index.url).to.deep.equal('//localhost/auth/v1/');
+      expect(index.index.url).to.deep.equal('localhost/auth/v1/');
 
       index = Index({
         prefix: 'auth/'
       });
 
-      expect(index.index.url).to.deep.equal('//localhost/auth/v1/');
+      expect(index.index.url).to.deep.equal('localhost/auth/v1/');
 
       index = Index({
         prefix: '/auth/'
       });
 
-      expect(index.index.url).to.deep.equal('//localhost/auth/v1/');
+      expect(index.index.url).to.deep.equal('localhost/auth/v1/');
     });
 
     it('should properly handle both version and prefix at the same time', function () {
@@ -155,7 +155,7 @@ describe('Index', function () {
         api_version: 5
       });
 
-      expect(index.index.url).to.deep.equal('//localhost/api/v5/');
+      expect(index.index.url).to.deep.equal('localhost/api/v5/');
     });
 
   });
