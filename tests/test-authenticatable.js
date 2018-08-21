@@ -26,23 +26,23 @@ describe('Authenticatable', function () {
 
   describe('#create()', function () {
 
-    it('should return a promise of a single entity', function () {
-      var username = 'stanley'
-        , password = 'rocks'
-        , response = {}
-        ;
+//    it('should return a promise of a single entity', function () {
+//      var username = 'stanley'
+//        , password = 'rocks'
+//        , response = {}
+//        ;
 
-      mock.post('/tokens')
-        .matchHeader('authorization', 'Basic c3RhbmxleTpyb2Nrcw==')
-        .reply(201, response);
+//      mock.post('/tokens')
+//        .matchHeader('authorization', 'Basic c3RhbmxleTpyb2Nrcw==')
+//        .reply(201, response);
 
-      var result = api.authenticate(username, password);
+//      var result = api.authenticate(username, password);
 
-      return Promise.all([
-        expect(result).to.eventually.be.an('object'),
-        expect(result).to.eventually.be.deep.equal(response)
-      ]);
-    });
+//      return Promise.all([
+//        expect(result).to.eventually.be.an('object'),
+//        expect(result).to.eventually.be.deep.equal(response)
+//      ]);
+//    });
 
     it('should throw an error if no username is provided', function () {
       var fn = function () {
