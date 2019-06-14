@@ -136,9 +136,8 @@ describe('Editable', function () {
       return Promise.all([
         expect(result).to.be.rejected,
         result.catch(function (err) {
-          expect(err).to.have.property('name', 'APIError');
-          expect(err).to.have.property('status', 400);
-          expect(err).to.have.property('message', 'some');
+          expect(err).to.have.property('name', 'RequestError');
+          expect(err).to.have.property('message', 'Request failed with status code 400');
         })
       ]);
     });

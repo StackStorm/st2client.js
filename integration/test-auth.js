@@ -40,8 +40,7 @@ prescribe('Auth', function () {
       return Promise.all([
         expect(result).to.be.rejected,
         result.catch(function (err) {
-          expect(err).to.have.property('name', 'APIError');
-          expect(err).to.have.property('status', 401);
+          expect(err).to.have.property('name', 'RequestError');
           expect(err).to.have.property('message');
         })
       ]);
@@ -55,7 +54,7 @@ prescribe('Auth', function () {
       return Promise.all([
         expect(result).to.be.rejected,
         result.catch(function (err) {
-          expect(err).to.have.property('name', 'APIError');
+          expect(err).to.have.property('name', 'RequestError');
           expect(err).to.have.property('status', 401);
           expect(err).to.have.property('message');
         })

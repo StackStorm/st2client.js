@@ -110,8 +110,7 @@ describe('Actions', function () {
       return Promise.all([
         expect(result).to.be.rejected,
         result.catch(function (err) {
-          expect(err).to.have.property('name', 'APIError');
-          expect(err).to.have.property('status', 404);
+          expect(err).to.have.property('name', 'RequestError');
           expect(err).to.have.property('message');
         })
       ]);
@@ -182,7 +181,7 @@ describe('Actions', function () {
       return Promise.all([
         expect(result).to.be.rejected,
         result.catch(function (err) {
-          expect(err).to.have.property('name', 'APIError');
+          expect(err).to.have.property('name', 'RequestError');
           expect(err).to.have.property('status', 404);
           expect(err).to.have.property('message');
         })
@@ -222,7 +221,7 @@ describe('Actions', function () {
       return Promise.all([
         expect(result).to.be.rejected,
         result.catch(function (err) {
-          expect(err).to.have.property('name', 'APIError');
+          expect(err).to.have.property('name', 'RequestError');
           expect(err).to.have.property('status', 404);
           expect(err).to.have.property('message');
         })

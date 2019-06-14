@@ -67,9 +67,8 @@ describe('Executions', function () {
       return Promise.all([
         expect(result).to.be.rejected,
         result.catch(function (err) {
-          expect(err).to.have.property('name', 'APIError');
-          expect(err).to.have.property('status', 400);
-          expect(err).to.have.property('message');
+          expect(err).to.have.property('name', 'RequestError');
+          expect(err).to.have.property('message', 'Request failed with status code 400');
         })
       ]);
     });
@@ -82,7 +81,7 @@ describe('Executions', function () {
       return Promise.all([
         expect(result).to.be.rejected,
         result.catch(function (err) {
-          expect(err).to.have.property('name', 'APIError');
+          expect(err).to.have.property('name', 'RequestError');
           expect(err).to.have.property('status', 404);
           expect(err).to.have.property('message');
         })
@@ -194,7 +193,7 @@ describe('Executions', function () {
       return Promise.all([
         expect(result).to.be.rejected,
         result.catch(function (err) {
-          expect(err).to.have.property('name', 'APIError');
+          expect(err).to.have.property('name', 'RequestError');
           expect(err).to.have.property('status', 404);
           expect(err).to.have.property('message');
         })
