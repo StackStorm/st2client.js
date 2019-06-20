@@ -189,7 +189,7 @@ module.exports = function (opts) {
           }
           this._expiryTimeout = setTimeout(function () {
             this.emit('expiry', token);
-          }.bind(this), new Date(token.expiry) - new Date());
+          }.bind(this), new Date(token.expiry) - new Date() - 1000);
           return token;
         }.bind(this));
       }
