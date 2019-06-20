@@ -86,16 +86,18 @@ describe('Request factory', function () {
     return expect(promise).to.be.rejectedWith(SyntaxError);
   });
 
-  it('should send body if provided', function () {
+  it('should send body if provided', function (done) {
     mock.get('/test', 'some')
       .reply(200);
 
     var promise = request(params, 'some');
 
-    return expect(promise).to.be.fulfilled;
+    expect(promise).to.be.fulfilled;
+
+    done();
   });
 
-  it('should stringify body as json', function () {
+  it('should stringify body as json', function (done) {
     mock.post('/test')
       .reply(200);
 
@@ -103,7 +105,9 @@ describe('Request factory', function () {
       method: 'post'
     }), {a: 'b'});
 
-    return expect(promise).to.be.fulfilled;
+    expect(promise).to.be.fulfilled;
+
+    done();
   });
 
   it('should throw an error if no params are provided', function () {

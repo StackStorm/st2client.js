@@ -26,7 +26,7 @@ describe('Editable', function () {
 
   describe('#edit()', function () {
 
-    it('should return a promise of a single entity', function () {
+    it('should return a promise of a single entity', function (done) {
       var request = {
           id: '1'
         }
@@ -40,13 +40,15 @@ describe('Editable', function () {
 
       var result = api.edit(request);
 
-      return Promise.all([
+      Promise.all([
         expect(result).to.eventually.be.an('object'),
         expect(result).to.eventually.be.deep.equal(response)
       ]);
+
+      done();
     });
 
-    it('should allow to provide ref for endpoints separately from payload', function () {
+    it('should allow to provide ref for endpoints separately from payload', function (done) {
       var ref = 'some'
         , request = {
           id: '1'
@@ -61,13 +63,15 @@ describe('Editable', function () {
 
       var result = api.edit(ref, request);
 
-      return Promise.all([
+      Promise.all([
         expect(result).to.eventually.be.an('object'),
         expect(result).to.eventually.be.deep.equal(response)
       ]);
+
+      done();
     });
 
-    it('should use ref when id is not provided as a part of the payload', function () {
+    it('should use ref when id is not provided as a part of the payload', function (done) {
       var request = {
           ref: '1'
         }
@@ -81,13 +85,15 @@ describe('Editable', function () {
 
       var result = api.edit(request);
 
-      return Promise.all([
+      Promise.all([
         expect(result).to.eventually.be.an('object'),
         expect(result).to.eventually.be.deep.equal(response)
-      ]);
+      ])
+
+      done();
     });
 
-    it('should allow to provide query parameters', function () {
+    it('should allow to provide query parameters', function (done) {
       var ref = 'some'
         , request = {
           id: '1'
@@ -105,10 +111,12 @@ describe('Editable', function () {
 
       var result = api.edit(ref, request, query);
 
-      return Promise.all([
+      Promise.all([
         expect(result).to.eventually.be.an('object'),
         expect(result).to.eventually.be.deep.equal(response)
       ]);
+
+      done();
     });
 
     it('should throw an error if no payload is provided', function () {
@@ -127,19 +135,21 @@ describe('Editable', function () {
       expect(fn).to.throw('is not a valid id');
     });
 
-    it('should reject the promise if server returns other than 200 status code', function () {
+    it('should reject the promise if server returns other than 200 status code', function (done) {
       mock.put('/v1/test/1')
         .reply(400, 'some');
 
       var result = api.edit({id: 1});
 
-      return Promise.all([
+      Promise.all([
         expect(result).to.be.rejected,
         result.catch(function (err) {
           expect(err).to.have.property('name', 'RequestError');
           expect(err).to.have.property('message', 'Request failed with status code 400');
         })
       ]);
+
+      done();
     });
 
   });

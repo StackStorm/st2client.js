@@ -26,7 +26,7 @@ describe('Repeatable', function () {
 
   describe('#repeat()', function () {
 
-    it('should return a promise of a single entity', function () {
+    it('should return a promise of a single entity', function (done) {
       var id = 'DEADBEEF'
         , request = {}
         , response = {}
@@ -37,10 +37,12 @@ describe('Repeatable', function () {
 
       var result = api.repeat(id, request);
 
-      return Promise.all([
+      Promise.all([
         expect(result).to.eventually.be.an('object'),
         expect(result).to.eventually.be.deep.equal(response)
       ]);
+
+      done();
     });
 
     it('should throw an error if no id is provided', function () {
@@ -59,19 +61,21 @@ describe('Repeatable', function () {
       expect(fn).to.throw('is not a valid payload');
     });
 
-    it('should reject the promise if server returns other than 201 status code', function () {
+    it('should reject the promise if server returns other than 201 status code', function (done) {
       mock.post('/v1/test/DEADBEEF/re_run')
         .reply(400, 'some');
 
       var result = api.repeat('DEADBEEF', {});
 
-      return Promise.all([
+      Promise.all([
         expect(result).to.be.rejected,
         result.catch(function (err) {
           expect(err).to.have.property('name', 'RequestError');
           expect(err).to.have.property('message', 'Request failed with status code 400');
         })
       ]);
+
+      done();
     });
 
   });
