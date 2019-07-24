@@ -36,7 +36,7 @@
     "gulp-size": "^2.0.0",
     "gulp-sourcemaps": "^1.6.0",
     "mocha": "^2.0.1",
-    "nock": "^0.50.0",
+    "nock": "^10.0.6",
     "promise-polyfill": "^2.1.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0"
