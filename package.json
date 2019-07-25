@@ -31,6 +31,10 @@
   "engine": {
     "node": ">=0.11.0"
   },
+  "files": [
+    "/index.js",
+    "/lib"
+  ],
   "dependencies": {
     "axios": "^0.7.0",
     "eventsource": "^0.1.4",
