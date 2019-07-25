@@ -36,6 +36,34 @@ describe('Deletable', function () {
       ]);
     });
 
+    it('should send an auth token', function () {
+      var response = {};
+
+      mock.delete('/v1/test/1')
+        .matchHeader('x-auth-token', 'token-aaaa')
+        .reply(204, response);
+
+      var result = api.delete(1, {token: 'token-aaaa'});
+
+      return result.then(function (response) {
+        expect(mock.isDone()).to.be.true;
+      });
+    });
+
+    it('should send an API key', function () {
+      var response = {};
+
+      mock.delete('/v1/test/1')
+        .matchHeader('st2-api-key', 'key-cccc')
+        .reply(204, response);
+
+      var result = api.delete(1, {key: 'key-cccc'});
+
+      return result.then(function (response) {
+        expect(mock.isDone()).to.be.true;
+      });
+    });
+
     it('should throw an error if no id is provided', function () {
       var fn = function () {
         api.delete();

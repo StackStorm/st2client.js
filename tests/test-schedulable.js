@@ -12,7 +12,7 @@ chai.use(chaiAsPromised);
 nock.disableNetConnect();
 
 var expect = chai.expect
-  , Writable = require('../lib/mixins/writable')
+  , Schedulable = require('../lib/mixins/schedulable')
   , mock = nock('http://localhost', {
     reqheaders: {
       'content-type': 'application/json;charset=utf-8'
@@ -20,11 +20,11 @@ var expect = chai.expect
   })
   ;
 
-describe('Writable', function () {
+describe('Schedulable', function () {
 
-  var api = endpoint('/test', Opts, Writable).value;
+  var api = endpoint('/test', Opts, Schedulable).value;
 
-  describe('#create()', function () {
+  describe('#schedule()', function () {
 
     it('should return a promise of a single entity', function () {
       var request = {}
@@ -32,9 +32,9 @@ describe('Writable', function () {
         ;
 
       mock.post('/v1/test', request)
-        .reply(201, response);
+        .reply(202, response);
 
-      var result = api.create(request);
+      var result = api.schedule({}, 'test');
 
       return Promise.all([
         expect(result).to.eventually.be.an('object'),
@@ -49,9 +49,9 @@ describe('Writable', function () {
 
       mock.post('/v1/test', request)
         .matchHeader('x-auth-token', 'token-aaaa')
-        .reply(201, response);
+        .reply(202, response);
 
-      var result = api.create(request, {token: 'token-aaaa'});
+      var result = api.schedule({}, 'test', {token: 'token-aaaa'});
 
       return result.then(function (response) {
         expect(mock.isDone()).to.be.true;
@@ -65,35 +65,31 @@ describe('Writable', function () {
 
       mock.post('/v1/test', request)
         .matchHeader('st2-api-key', 'key-cccc')
-        .reply(201, response);
+        .reply(202, response);
 
-      var result = api.create(request, {key: 'key-cccc'});
+      var result = api.schedule({}, 'test', {key: 'key-cccc'});
 
       return result.then(function (response) {
         expect(mock.isDone()).to.be.true;
       });
     });
 
-    it('should throw an error if no payload is provided', function () {
-      var fn = function () {
-        api.create();
-      };
+    it('should reject the promise if server returns other than 202 status code', function () {
+      var request = {}
+        , response = 'accepted instead of scheduled'
+        ;
 
-      expect(fn).to.throw('is not a valid payload');
-    });
+      mock.post('/v1/test', request)
+        .reply(201, response);
 
-    it('should reject the promise if server returns other than 201 status code', function () {
-      mock.post('/v1/test')
-        .reply(400, 'some');
-
-      var result = api.create({});
+      var result = api.schedule({}, 'test');
 
       return Promise.all([
         expect(result).to.be.rejected,
         result.catch(function (err) {
           expect(err).to.have.property('name', 'APIError');
-          expect(err).to.have.property('status', 400);
-          expect(err).to.have.property('message', 'some');
+          expect(err).to.have.property('status', 201);
+          expect(err).to.have.property('message', response);
         })
       ]);
     });

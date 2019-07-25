@@ -141,6 +141,36 @@ describe('Paginatable', function () {
       ]);
     });
 
+    it('should send an auth token', function () {
+      var response = []
+        ;
+
+      mock.get('/v1/test?limit=100&a=b&offset=400')
+        .matchHeader('x-auth-token', 'token-aaaa')
+        .reply(200, response);
+
+      var result = api.listPage(5, { a: 'b', limit: 100 }, {token: 'token-aaaa'});
+
+      return result.then(function (response) {
+        expect(mock.isDone()).to.be.true;
+      });
+    });
+
+    it('should send an API key', function () {
+      var response = []
+        ;
+
+      mock.get('/v1/test?limit=100&a=b&offset=400')
+        .matchHeader('st2-api-key', 'key-cccc')
+        .reply(200, response);
+
+      var result = api.listPage(5, { a: 'b', limit: 100 }, {key: 'key-cccc'});
+
+      return result.then(function (response) {
+        expect(mock.isDone()).to.be.true;
+      });
+    });
+
   });
 
   describe('#list()', function () {

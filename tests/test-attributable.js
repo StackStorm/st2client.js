@@ -36,6 +36,34 @@ describe('Attributable', function () {
       ]);
     });
 
+    it('should send an auth token', function () {
+      var response = {};
+
+      mock.get('/v1/test/1/attribute/some')
+        .matchHeader('x-auth-token', 'token-aaaa')
+        .reply(200, response);
+
+      var result = api.attribute(1, 'some', {token: 'token-aaaa'});
+
+      return result.then(function (response) {
+        expect(mock.isDone()).to.be.true;
+      });
+    });
+
+    it('should send an API key', function () {
+      var response = {};
+
+      mock.get('/v1/test/1/attribute/some')
+        .matchHeader('st2-api-key', 'key-cccc')
+        .reply(200, response);
+
+      var result = api.attribute(1, 'some', {key: 'key-cccc'});
+
+      return result.then(function (response) {
+        expect(mock.isDone()).to.be.true;
+      });
+    });
+
     it('should throw an error if no id is provided', function () {
       var fn = function () {
         api.attribute();

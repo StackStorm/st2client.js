@@ -4,8 +4,22 @@
   "description": "StackStorm ST2 API library",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha tests/",
+    "test": "nyc mocha tests/",
     "prepublish": "node_modules/.bin/gulp"
+  },
+  "nyc": {
+    "temp-directory": "./coverage/.nyc_output",
+    "include": [
+      "index.js",
+      "lib"
+    ],
+    "exclude": [
+      "test"
+    ],
+    "reporter": [
+      "html",
+      "text"
+    ]
   },
   "author": "Kirill Izotov <enykeev@stackstorm.com>",
   "license": "Apache-2.0",
@@ -36,7 +50,8 @@
     "gulp-size": "^2.0.0",
     "gulp-sourcemaps": "^1.6.0",
     "mocha": "^2.0.1",
-    "nock": "^0.50.0",
+    "nock": "^10.0.6",
+    "nyc": "^14.1.1",
     "promise-polyfill": "^2.1.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0"

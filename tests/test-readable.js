@@ -36,6 +36,34 @@ describe('Readable', function () {
       ]);
     });
 
+    it('should send an auth token', function () {
+      var response = {};
+
+      mock.get('/v1/test/1?a=b')
+        .matchHeader('x-auth-token', 'token-aaaa')
+        .reply(200, response);
+
+      var result = api.get(1, {a: 'b'}, {token: 'token-aaaa'});
+
+      result.then(function (response) {
+        expect(mock.isDone()).to.be.true;
+      });
+    });
+
+    it('should send an API key', function () {
+      var response = {};
+
+      mock.get('/v1/test/1?a=b')
+        .matchHeader('st2-api-key', 'key-cccc')
+        .reply(200, response);
+
+      var result = api.get(1, {a: 'b'}, {key: 'key-cccc'});
+
+      result.then(function (response) {
+        expect(mock.isDone()).to.be.true;
+      });
+    });
+
     it('should throw an error if no id is provided', function () {
       var fn = function () {
         api.get();
