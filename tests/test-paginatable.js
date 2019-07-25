@@ -164,7 +164,7 @@ describe('Paginatable', function () {
         .matchHeader('st2-api-key', 'key-cccc')
         .reply(200, response);
 
-      var result = api.listPage(5, { a: 'b', limit: 100 }, {api_key: 'key-cccc'});
+      var result = api.listPage(5, { a: 'b', limit: 100 }, {key: 'key-cccc'});
 
       return result.then(function (response) {
         expect(mock.isDone()).to.be.true;

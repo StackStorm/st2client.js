@@ -67,7 +67,7 @@ describe('Writable', function () {
         .matchHeader('st2-api-key', 'key-cccc')
         .reply(201, response);
 
-      var result = api.create(request, {api_key: 'key-cccc'});
+      var result = api.create(request, {key: 'key-cccc'});
 
       return result.then(function (response) {
         expect(mock.isDone()).to.be.true;

@@ -152,7 +152,7 @@ describe('Editable', function () {
         .matchHeader('st2-api-key', 'key-cccc')
         .reply(200, response);
 
-      var result = api.edit(ref, request, query, {api_key: 'key-cccc'});
+      var result = api.edit(ref, request, query, {key: 'key-cccc'});
 
       return result.then(function (response) {
         expect(mock.isDone()).to.be.true;

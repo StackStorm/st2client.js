@@ -67,7 +67,7 @@ describe('Schedulable', function () {
         .matchHeader('st2-api-key', 'key-cccc')
         .reply(202, response);
 
-      var result = api.schedule({}, 'test', {api_key: 'key-cccc'});
+      var result = api.schedule({}, 'test', {key: 'key-cccc'});
 
       return result.then(function (response) {
         expect(mock.isDone()).to.be.true;

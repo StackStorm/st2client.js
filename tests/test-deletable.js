@@ -57,7 +57,7 @@ describe('Deletable', function () {
         .matchHeader('st2-api-key', 'key-cccc')
         .reply(204, response);
 
-      var result = api.delete(1, {api_key: 'key-cccc'});
+      var result = api.delete(1, {key: 'key-cccc'});
 
       return result.then(function (response) {
         expect(mock.isDone()).to.be.true;

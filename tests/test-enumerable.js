@@ -76,7 +76,7 @@ describe('Enumerable', function () {
         .matchHeader('st2-api-key', 'key-cccc')
         .reply(200, response);
 
-      var result = api.listAll({ a: 'b' }, {api_key: 'key-cccc'});
+      var result = api.listAll({ a: 'b' }, {key: 'key-cccc'});
 
       return result.then(function (response) {
         expect(mock.isDone()).to.be.true;

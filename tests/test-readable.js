@@ -57,7 +57,7 @@ describe('Readable', function () {
         .matchHeader('st2-api-key', 'key-cccc')
         .reply(200, response);
 
-      var result = api.get(1, {a: 'b'}, {api_key: 'key-cccc'});
+      var result = api.get(1, {a: 'b'}, {key: 'key-cccc'});
 
       result.then(function (response) {
         expect(mock.isDone()).to.be.true;

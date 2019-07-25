@@ -57,7 +57,7 @@ describe('Attributable', function () {
         .matchHeader('st2-api-key', 'key-cccc')
         .reply(200, response);
 
-      var result = api.attribute(1, 'some', {api_key: 'key-cccc'});
+      var result = api.attribute(1, 'some', {key: 'key-cccc'});
 
       return result.then(function (response) {
         expect(mock.isDone()).to.be.true;
