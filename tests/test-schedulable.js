@@ -42,6 +42,38 @@ describe('Schedulable', function () {
       ]);
     });
 
+    it('should send an auth token', function () {
+      var request = {}
+        , response = {}
+        ;
+
+      mock.post('/v1/test', request)
+        .matchHeader('x-auth-token', 'token-aaaa')
+        .reply(202, response);
+
+      var result = api.schedule({}, 'test', {token: 'token-aaaa'});
+
+      return result.then(function (response) {
+        expect(mock.isDone()).to.be.true;
+      });
+    });
+
+    it('should send an API key', function () {
+      var request = {}
+        , response = {}
+        ;
+
+      mock.post('/v1/test', request)
+        .matchHeader('st2-api-key', 'key-cccc')
+        .reply(202, response);
+
+      var result = api.schedule({}, 'test', {api_key: 'key-cccc'});
+
+      return result.then(function (response) {
+        expect(mock.isDone()).to.be.true;
+      });
+    });
+
     it('should reject the promise if server returns other than 202 status code', function () {
       var request = {}
         , response = 'accepted instead of scheduled'

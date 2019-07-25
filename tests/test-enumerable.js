@@ -53,6 +53,36 @@ describe('Enumerable', function () {
       ]);
     });
 
+    it('should send an auth token', function () {
+      var response = []
+        ;
+
+      mock.get('/v1/test?a=b')
+        .matchHeader('x-auth-token', 'token-aaaa')
+        .reply(200, response);
+
+      var result = api.listAll({ a: 'b' }, {token: 'token-aaaa'});
+
+      return result.then(function (response) {
+        expect(mock.isDone()).to.be.true;
+      });
+    });
+
+    it('should send an API key', function () {
+      var response = []
+        ;
+
+      mock.get('/v1/test?a=b')
+        .matchHeader('st2-api-key', 'key-cccc')
+        .reply(200, response);
+
+      var result = api.listAll({ a: 'b' }, {api_key: 'key-cccc'});
+
+      return result.then(function (response) {
+        expect(mock.isDone()).to.be.true;
+      });
+    });
+
     it('should reject the promise if server returns 4xx or 5xx status code', function () {
       mock.get('/v1/test')
         .reply(400, 'some');

@@ -42,6 +42,38 @@ describe('Writable', function () {
       ]);
     });
 
+    it('should send an auth token', function () {
+      var request = {}
+        , response = {}
+        ;
+
+      mock.post('/v1/test', request)
+        .matchHeader('x-auth-token', 'token-aaaa')
+        .reply(201, response);
+
+      var result = api.create(request, {token: 'token-aaaa'});
+
+      return result.then(function (response) {
+        expect(mock.isDone()).to.be.true;
+      });
+    });
+
+    it('should send an API key', function () {
+      var request = {}
+        , response = {}
+        ;
+
+      mock.post('/v1/test', request)
+        .matchHeader('st2-api-key', 'key-cccc')
+        .reply(201, response);
+
+      var result = api.create(request, {api_key: 'key-cccc'});
+
+      return result.then(function (response) {
+        expect(mock.isDone()).to.be.true;
+      });
+    });
+
     it('should throw an error if no payload is provided', function () {
       var fn = function () {
         api.create();

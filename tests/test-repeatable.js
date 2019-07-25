@@ -43,6 +43,40 @@ describe('Repeatable', function () {
       ]);
     });
 
+    it('should send an auth token', function () {
+      var id = 'DEADBEEF'
+        , request = {}
+        , response = {}
+        ;
+
+      mock.post('/v1/test/' + id + '/re_run', request)
+        .matchHeader('x-auth-token', 'token-aaaa')
+        .reply(201, response);
+
+      var result = api.repeat(id, request, 'test', {token: 'token-aaaa'});
+
+      return result.then(function (response) {
+        expect(mock.isDone()).to.be.true;
+      });
+    });
+
+    it('should send an API key', function () {
+      var id = 'DEADBEEF'
+        , request = {}
+        , response = {}
+        ;
+
+      mock.post('/v1/test/' + id + '/re_run', request)
+        .matchHeader('st2-api-key', 'key-cccc')
+        .reply(201, response);
+
+      var result = api.repeat(id, request, 'test', {api_key: 'key-cccc'});
+
+      return result.then(function (response) {
+        expect(mock.isDone()).to.be.true;
+      });
+    });
+
     it('should throw an error if no id is provided', function () {
       var fn = function () {
         api.repeat();
