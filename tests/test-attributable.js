@@ -45,7 +45,8 @@ describe('Attributable', function () {
 
       var result = api.attribute(1, 'some', {token: 'token-aaaa'});
 
-      return result.then(function (response) {
+      return result.then(function () {
+        /* jshint expr: true */
         expect(mock.isDone()).to.be.true;
       });
     });
@@ -59,7 +60,8 @@ describe('Attributable', function () {
 
       var result = api.attribute(1, 'some', {key: 'key-cccc'});
 
-      return result.then(function (response) {
+      return result.then(function () {
+        /* jshint expr: true */
         expect(mock.isDone()).to.be.true;
       });
     });

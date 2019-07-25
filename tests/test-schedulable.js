@@ -53,7 +53,8 @@ describe('Schedulable', function () {
 
       var result = api.schedule({}, 'test', {token: 'token-aaaa'});
 
-      return result.then(function (response) {
+      return result.then(function () {
+        /* jshint expr: true */
         expect(mock.isDone()).to.be.true;
       });
     });
@@ -69,7 +70,8 @@ describe('Schedulable', function () {
 
       var result = api.schedule({}, 'test', {key: 'key-cccc'});
 
-      return result.then(function (response) {
+      return result.then(function () {
+        /* jshint expr: true */
         expect(mock.isDone()).to.be.true;
       });
     });
