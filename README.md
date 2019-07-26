@@ -58,6 +58,12 @@ Integration tests require `st2` to be present. To set up dev environment and run
 gulp test
 ```
 
+or, to run tests with coverage results:
+
+```bash
+npm test
+```
+
 ### Running Browser tests
 
 ```bash
