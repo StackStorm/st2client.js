@@ -1,11 +1,13 @@
 # Deprecated
 
-Please refer to https://api.stackstorm.com/ for the documentation on the latest version of API.
+This project is still updated and used by hubot-stackstorm, but it is officially deprecated.
+
+Please refer to https://api.stackstorm.com/ for the documentation on the latest version of the StackStorm API.
 
 StackStorm ST2 JavaScript bindings
 ==============================================================================
 
-Officially supported node.js\browserify client library for using ST2 APIs.
+Officially supported node.js/browserify client library for using ST2 APIs.
 
 The library (and the whole API, to be fair) is in **Alpha**, so incompatible changes should be expected.
 
@@ -54,6 +56,12 @@ Integration tests require `st2` to be present. To set up dev environment and run
 
 ```bash
 gulp test
+```
+
+or, to run tests with coverage results:
+
+```bash
+npm test
 ```
 
 ### Running Browser tests
