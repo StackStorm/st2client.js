@@ -1,6 +1,6 @@
 {
   "name": "st2client",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "StackStorm ST2 API library",
   "main": "index.js",
   "scripts": {
@@ -31,9 +31,14 @@
   "engine": {
     "node": ">=0.11.0"
   },
+  "files": [
+    "/index.js",
+    "/lib"
+  ],
   "dependencies": {
     "axios": "^0.7.0",
     "eventsource": "^0.1.4",
+    "lodash": "^4.17.15",
     "object.assign": "^1.0.1"
   },
   "devDependencies": {

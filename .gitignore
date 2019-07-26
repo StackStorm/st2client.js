@@ -56,3 +56,4 @@ node_modules
 
 # Custom
 dist
+package-lock.json

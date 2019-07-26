@@ -2,7 +2,6 @@
 'use strict';
 
 var expect = require('chai').expect
-  , EventEmitter = require('events')
   , nock = require('nock')
   ;
 
@@ -90,7 +89,7 @@ describe('Endpoint', function () {
 
       var test_endpoint = Object.create({}, {test: test_endpoint_descriptor});
 
-      var scope = nock('http://localhost:8080')
+      nock('http://localhost:8080')
         .get('/test')
         .matchHeader('x-auth-token', 'token-aaaa')
         .reply(200, {});
@@ -135,7 +134,7 @@ describe('Endpoint', function () {
 
       var test_endpoint = Object.create({}, {test: test_endpoint_descriptor});
 
-      var scope = nock('http://localhost:8080')
+      nock('http://localhost:8080')
         .get('/test')
         .matchHeader('st2-api-key', 'key-cccc')
         .reply(200, {});

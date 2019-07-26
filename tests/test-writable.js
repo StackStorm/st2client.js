@@ -53,7 +53,8 @@ describe('Writable', function () {
 
       var result = api.create(request, {token: 'token-aaaa'});
 
-      return result.then(function (response) {
+      return result.then(function () {
+        /* jshint expr: true */
         expect(mock.isDone()).to.be.true;
       });
     });
@@ -69,7 +70,8 @@ describe('Writable', function () {
 
       var result = api.create(request, {key: 'key-cccc'});
 
-      return result.then(function (response) {
+      return result.then(function () {
+        /* jshint expr: true */
         expect(mock.isDone()).to.be.true;
       });
     });

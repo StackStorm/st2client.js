@@ -45,7 +45,8 @@ describe('Readable', function () {
 
       var result = api.get(1, {a: 'b'}, {token: 'token-aaaa'});
 
-      result.then(function (response) {
+      result.then(function () {
+        /* jshint expr: true */
         expect(mock.isDone()).to.be.true;
       });
     });
@@ -59,7 +60,8 @@ describe('Readable', function () {
 
       var result = api.get(1, {a: 'b'}, {key: 'key-cccc'});
 
-      result.then(function (response) {
+      result.then(function () {
+        /* jshint expr: true */
         expect(mock.isDone()).to.be.true;
       });
     });

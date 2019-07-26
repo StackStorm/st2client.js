@@ -130,7 +130,8 @@ describe('Editable', function () {
 
       var result = api.edit(ref, request, query, {token: 'token-aaaa'});
 
-      return result.then(function (response) {
+      return result.then(function () {
+        /* jshint expr: true */
         expect(mock.isDone()).to.be.true;
       });
     });
@@ -154,7 +155,8 @@ describe('Editable', function () {
 
       var result = api.edit(ref, request, query, {key: 'key-cccc'});
 
-      return result.then(function (response) {
+      return result.then(function () {
+        /* jshint expr: true */
         expect(mock.isDone()).to.be.true;
       });
     });

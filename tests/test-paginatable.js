@@ -151,7 +151,8 @@ describe('Paginatable', function () {
 
       var result = api.listPage(5, { a: 'b', limit: 100 }, {token: 'token-aaaa'});
 
-      return result.then(function (response) {
+      return result.then(function () {
+        /* jshint expr: true */
         expect(mock.isDone()).to.be.true;
       });
     });
@@ -166,7 +167,8 @@ describe('Paginatable', function () {
 
       var result = api.listPage(5, { a: 'b', limit: 100 }, {key: 'key-cccc'});
 
-      return result.then(function (response) {
+      return result.then(function () {
+        /* jshint expr: true */
         expect(mock.isDone()).to.be.true;
       });
     });

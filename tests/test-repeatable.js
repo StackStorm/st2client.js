@@ -55,7 +55,8 @@ describe('Repeatable', function () {
 
       var result = api.repeat(id, request, 'test', {token: 'token-aaaa'});
 
-      return result.then(function (response) {
+      return result.then(function () {
+        /* jshint expr: true */
         expect(mock.isDone()).to.be.true;
       });
     });
@@ -72,7 +73,8 @@ describe('Repeatable', function () {
 
       var result = api.repeat(id, request, 'test', {key: 'key-cccc'});
 
-      return result.then(function (response) {
+      return result.then(function () {
+        /* jshint expr: true */
         expect(mock.isDone()).to.be.true;
       });
     });
