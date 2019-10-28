@@ -36,7 +36,7 @@
     "/lib"
   ],
   "dependencies": {
-    "axios": "^0.7.0",
+    "axios": "^0.19.0",
     "eventsource": "^0.1.4",
     "lodash": "^4.17.15",
     "object.assign": "^1.0.1"
