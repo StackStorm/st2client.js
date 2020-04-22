@@ -17,6 +17,11 @@
       window.mocha.setup('bdd');
       window.mocha.slow(500);
       window.mocha.timeout(3000);
+      describe('One test to satisfy mocha', function () {
+        it('should be true', function () {
+          return true;
+        });
+      });
     </script>
 
     <script src="../node_modules/promise-polyfill/Promise.js"></script>
