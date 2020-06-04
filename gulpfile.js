@@ -74,7 +74,7 @@ gulp.task('test', function () {
     }));
 });
 
-gulp.task('test-browser', ['browserify', 'browserify-tests'], function () {
+gulp.task('test-browser', gulp.series('browserify', 'browserify-tests', function () {
   return gulp.src('tests/tests.html')
     .pipe(mochaPhantomJS({
       reporter: process.env.reporter || 'spec',
@@ -82,7 +82,7 @@ gulp.task('test-browser', ['browserify', 'browserify-tests'], function () {
         useColors: true
       }
     }));
-});
+}));
 
 gulp.task('test-integration', function () {
   var options = {'timeout': INTEGRATION_TEST_TIMEOUT};
@@ -91,10 +91,10 @@ gulp.task('test-integration', function () {
     .pipe(mocha(options));
 });
 
-gulp.task('build', ['browserify']);
+gulp.task('build', gulp.series('browserify'));
 
 gulp.task('watch', function() {
   gulp.watch(['index.js', 'tests/**/*.js'], ['lint', 'browserify']);
 });
 
-gulp.task('default', ['lint', 'browserify', 'browserify-tests', 'test']);
+gulp.task('default', gulp.series('lint', 'browserify', 'browserify-tests', 'test'));
