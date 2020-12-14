@@ -1,6 +1,14 @@
 Changelog
 =========
 
+1.2.4 - December 13, 2020
+-------------------------
+
+Updated
+~~~~~~~
+
+* Updated ``ini`` dependency to 1.3.8 (improvement) #82
+
 1.2.3 - April 23, 2020
 ----------------------
 
