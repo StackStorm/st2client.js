@@ -1,6 +1,15 @@
 Changelog
 =========
 
+1.2.5 - January 21, 2021
+------------------------
+
+Updated
+~~~~~~~
+
+* Updated ``axios`` dependency to 0.21.1 (improvement) #86
+* Update ``lodash`` dependency to 4.17.19 (improvement) #86
+
 1.2.4 - December 13, 2020
 -------------------------
 
