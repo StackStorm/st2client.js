@@ -1,6 +1,6 @@
 {
   "name": "st2client",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "StackStorm ST2 API library",
   "main": "index.js",
   "scripts": {
@@ -36,7 +36,7 @@
     "/lib"
   ],
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "eventsource": "^0.1.4",
     "lodash": "^4.17.15",
     "object.assign": "^1.0.1"
@@ -45,6 +45,7 @@
     "browserify": "^16.5.1",
     "chai": "^2.1.2",
     "chai-as-promised": "^4.1.1",
+    "debug": "^4.3.1",
     "del": "^5.1.0",
     "glob": "^7.1.6",
     "gulp": "^4.0.2",
