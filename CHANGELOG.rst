@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.2.6 - May 11, 2021
+------------------------
+
+Updated
+~~~~~~~
+* Update ``lodash`` dependency to 4.17.21 (improvement) #90
+
 1.2.5 - January 21, 2021
 ------------------------
 
