@@ -7,6 +7,8 @@ node_js:
   - "10"
   - "11"
   - "12"
+  - "13"
+  - "14"
   - "node"
 matrix:
   # Report status as soon as just the required tests run
@@ -17,5 +19,7 @@ matrix:
     - node_js: "7"
     - node_js: "11"
     - node_js: "12"
+    - node_js: "13"
+    - node_js: "14"
     - node_js: node
 sudo: false
