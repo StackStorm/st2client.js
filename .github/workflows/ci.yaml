@@ -8,7 +8,7 @@ on:
       - master
       - winem-gha-introduction
     tags:
-      - [0-9]+.[0-9]+.[0-9]+
+      - "[0-9]+.[0-9]+.[0-9]+"
   pull_request:
     type: [opened, reopened, edited]
     branches:
