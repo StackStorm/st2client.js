@@ -4,9 +4,7 @@ on:
   push:
     branches:
       # only on merges to master branch
-      # PRE_PR_TODO - Remove my temp branch from the list below
       - master
-      - winem-gha-introduction
     tags:
       - "[0-9]+.[0-9]+.[0-9]+"
   pull_request:
@@ -14,10 +12,9 @@ on:
     branches:
       # Only for PRs targeting those branches
       - master
-  # PRE_PR_TODO - Uncomment the nightly cron below
-  # schedule:
+  schedule:
     # run every night at midnight
-    # - cron: '0 0 * * *'
+    - cron: '0 0 * * *'
 
 jobs:
   # Special job which automatically cancels old runs for the same branch, prevents runs for the
