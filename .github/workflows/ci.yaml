@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches:
+      # only on merges to master branch
+      - master
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+"
+  pull_request:
+    type: [opened, reopened, edited]
+    branches:
+      # Only for PRs targeting those branches
+      - master
+  schedule:
+    # run every night at midnight
+    - cron: '0 0 * * *'
+
+jobs:
+  # Special job which automatically cancels old runs for the same branch, prevents runs for the
+  # same file set which has already passed, etc.
+  pre_job:
+    name: Skip Duplicate Jobs Pre Job
+    runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@4c656bbdb6906310fa6213604828008bc28fe55d # v3.3.0
+        with:
+          cancel_others: 'true'
+          github_token: ${{ github.token }}
+
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 11.x, 12.x, 13.x, 14.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm test
