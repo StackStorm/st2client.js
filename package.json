@@ -37,7 +37,7 @@
   ],
   "dependencies": {
     "axios": "^0.21.1",
-    "eventsource": "^0.1.4",
+    "eventsource": "^2.0.2",
     "lodash": "^4.17.21",
     "object.assign": "^1.0.1"
   },
